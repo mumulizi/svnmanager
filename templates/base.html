@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    {% block title %}<title>代码发布</title>{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+	 <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">代码发布系统</a>
+		  <div class="nav-collapse collapse">
+		  <ul class="nav pull-right">
+			<li class="dropdown"> 
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{user.username}} <b class="caret"></b></a> 
+			<ul class="dropdown-menu"> 
+{#			<li><a href="{% url aop.views.edituser user.id %}"><i class="icon-user"></i> 个人资料</a></li>#}
+			<li><a href="#"><i class="icon-user"></i> 个人资料</a></li>
+			<li class="divider"></li>
+			<li><a href="#"><i class="icon-off"></i> 注销</a></li> </ul> </li>
+		  </ul>
+		  </div>
+        </div>
+      </div>
+    </div>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <ul class="nav nav-tabs nav-stacked">
+		<li><a href="/"><i class="icon-th-list"></i> Server</a></li>
+		<li><a href="{% url 'showsvn' %}"><i class="icon-th"></i> Svn</a></li>
+		<li><a href="#"><i class="icon-lock"></i> Group</a></li>
+{#          暂时去掉保留功能#}
+{#		<li><a href="#"><i class="icon-lock"></i> Task</a></li>#}
+{#		<li><a href="#"><i class="icon-lock"></i> Script</a></li>#}
+{#		<li><a href="#"><i class="icon-lock"></i> User</a></li>#}
+	  </ul>
+    </div>
+    <div class="box span10">
+	
+	{% block content %}{% endblock %}
+	
+    </div><!-- span 10 -->
+  </div>
+</div>
+    <footer>
+    </footer>
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	
+	<script src="/static/js/aop.js"></script>
+	<!--<script type="text/javascript">
+	 $(document).ready(function(){
+	  $("#send").click(function(){
+		$.post("svnadd/",
+		{ 
+		  email:$('#inputEmail').val(),
+		  passwd:$('#inputPassword').val()
+		},
+		function(result){
+		  alert(result);
+		  });
+	  });  
+	  
+	  $("a[name='Edit']").click(function(){
+	    var $v =$("a[name='Edit']").attr('id');
+		alert($v);
+	  });	  
+	  
+	  
+	});
+  </script>-->
+  </body>
+</html>

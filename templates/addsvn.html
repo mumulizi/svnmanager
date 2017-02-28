@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}<title>Add Svn</title>{% endblock %}
+{% block content %}
+<h3>Add Svn</h3>
+	<hr>
+	<form method="POST" action="" class="form-horizontal"> {% csrf_token %}
+  <div class="control-group">
+    <label class="control-label" for="svn_name">Svn Name:</label>
+      <input type="text" id="inputsvnname" name="svnname" placeholder="Svn name">
+    <div class="controls">
+      {{ form.svn_name }}{{form.svn_name.errors}}
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="svn_user">Svn User:</label>
+      <input type="text" id="inputsvnuser" name="svnuser" placeholder="Svn User">
+    <div class="controls">
+      {{ form.svn_user }}{{form.svn_user.errors}}
+    </div>
+  </div>
+    <div class="control-group">
+    <label class="control-label" for="svn_pass">Svn Pass:</label>
+        <input type="text" id="inputpass" name="svnpass" placeholder="Svn Passwd">
+    <div class="controls">
+      {{ form.svn_pass }}{{form.svn_pass.errors}}
+    </div>
+  </div>
+    <div class="control-group">
+    <label class="control-label" for="host_user">local path:</label>
+        <input type="text" id="inputpath" name="localpath" placeholder="/var/www/html">
+    <div class="controls">
+       {{ form.svn_local }}{{form.svn_local.errors}}
+    </div>
+  </div>
+    <div class="control-group">
+    <label class="control-label" for="host_user">Svn path:</label>
+         <input type="text" id="inputsvnpath" name="svnpath" placeholder="svn://xx.xx.com/svnproject">
+    <div class="controls">
+	  {{ form.svn_path }}{{form.svn_path.errors}}
+    </div>
+  </div>
+    <div class="control-group">
+    <label class="control-label" for="bash_dir">Svn by Host:</label>
+        <select name="host11_id">
+            {% for host11 in hostid11 %}
+                <option value="{{ host11.id }}">{{ host11.host_name }}</option>
+            {% endfor %}
+
+        </select>
+
+{#        <input type="text" id="inputhost" name="host" placeholder="host">#}
+    <div class="controls">
+	{{ form.host }}{{form.host.errors}}
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn" >Save Svn</button>
+    </div>
+  </div>
+</form>
+<span class="label label-success">{{result}}</span>
+{% endblock %}
