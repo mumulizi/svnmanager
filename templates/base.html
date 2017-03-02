@@ -22,7 +22,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#">代码发布系统</a>
+          <a class="brand" href="{% url 'showhost' %}">代码发布系统</a>
 		  <div class="nav-collapse collapse">
 		  <ul class="nav pull-right">
 			<li class="dropdown"> 
@@ -31,7 +31,7 @@
 {#			<li><a href="{% url aop.views.edituser user.id %}"><i class="icon-user"></i> 个人资料</a></li>#}
 			<li><a href="#"><i class="icon-user"></i> 个人资料</a></li>
 			<li class="divider"></li>
-			<li><a href="#"><i class="icon-off"></i> 注销</a></li> </ul> </li>
+			<li><a href="{% url 'logout' %}"><i class="icon-off"></i> 注销</a></li> </ul> </li>
 		  </ul>
 		  </div>
         </div>

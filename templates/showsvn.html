@@ -16,10 +16,10 @@
       <table class="table table-bordered table-striped">
 		<thead>
 			<tr>
-			<th>Svn Name</th>
-			<th>local path</th>
-			<th>Svn path</th>
-			<th>By Host</th>
+			<th>项目名</th>
+			<th>发布到目录</th>
+			<th>SVN地址</th>
+			<th>发布到</th>
 			<th width="150">操作</th>
 			</tr>
 		</thead>
@@ -33,11 +33,13 @@
 			<td>
 				<div class="btn-group">
 				<a class="btn" href="{% url 'svnupdate' svn.id 1 %}" title="Update svn"><i class="icon-refresh"></i>更新</a>
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">回滚<span class="caret"></span></a>
-				<ul class="dropdown-menu">
-				<li><a href="{% url 'svnupdate' svn.id 2 %}">上一版本</a></li>
-				<li><a href="#">指定版本</a></li>
-				</ul>
+{#				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">回滚<span class="caret"></span></a>#}
+{#				<ul class="dropdown-menu">#}
+{#				<li><a href="{% url 'svnupdate' svn.id 2 %}">上一版本</a></li>#}
+{#				<li><a href="#">指定版本</a></li>#}
+{#              </ul>#}
+                 <a class="btn" href="{% url 'svnupdate' svn.id 2 %}" title="back svn"><i class="icon-refresh"></i>回滚</a>
+
 				</div>
 			</td>
 			</tr>

@@ -1,0 +1,156 @@
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000035BE668>
+2017-03-01 16:49
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000035BE668>
+2017-03-01 16:49
+AppProject:
+跳过“/svndata/rocensvn”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000035BE668>
+2017-03-01 16:59
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000035BE668>
+2017-03-01 17:00
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000035BE668>
+2017-03-01 17:01
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000035BE668>
+2017-03-01 17:02
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000035BE668>
+2017-03-01 17:03
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000035BE668>
+2017-03-01 17:04
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x000000000351E668>
+2017-03-01 17:06
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x000000000351E668>
+2017-03-01 17:18
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x000000000351E668>
+2017-03-01 17:19
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x000000000351E668>
+2017-03-01 17:22
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x000000000351E668>
+2017-03-01 17:23
+testsvnname:
+跳过“/svndata/repos”
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x000000000351E668>
+2017-03-01 17:23
+testsvnname:
+D    /svndata/repos/asdfadsfasffsdfa.txt
+更新到版本 50。
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x000000000351E668>
+2017-03-01 17:24
+testsvnname:
+A    /svndata/repos/testaaaaaaaa.txt
+更新到版本 51。
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x000000000363C668>
+2017-03-01 18:05
+testsvnname:
+版本 51。
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x000000000363C668>
+2017-03-01 18:05
+testsvnname:
+版本 51。
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000034BE668>
+2017-03-01 18:24
+testsvnname:
+版本 51。
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000034BE668>
+2017-03-01 18:25
+testsvnname:
+版本 51。
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000034BE668>
+2017-03-01 18:25
+testsvnname:
+版本 51。
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000034BE668>
+2017-03-01 18:25
+AppProject:
+版本 0。
+
+
+-----------------------------------------------------------------
+<django.db.models.query_utils.DeferredAttribute object at 0x00000000034BE668>
+2017-03-01 18:26
+testsvnname:
+版本 51。
+
+
+-----------------------------------------------------------------

@@ -12,7 +12,6 @@ from app01 import models
 import string
 
 
-
 def login(request):
     #登录功能
 
@@ -21,6 +20,8 @@ def login(request):
 
         user = authenticate(username=request.POST.get('username'),
                             password=request.POST.get('password'))
+        global aaa
+        aaa = request.POST.get("username")
 
         if user is not None:
             #使用自带认证登录
@@ -42,8 +43,19 @@ def logout(request):
 
 
 @login_required(login_url='/login/')
+def index(request):
+    if request.method =="POST":
+        hostall = models.hosts.objects.all()
+        userall = models.UserProfile.objects.all()
+        snvsall = models.svns.objects.all()
+
+
+@login_required(login_url='/login/')
 def showhost(request):
+    hostall = models.hosts.objects.count()
+    svnall = models.svns.objects.count()
     if request.method == 'POST':
+
         search = request.POST.get("search",'null')
         print  request.POST,search
         qset = (
@@ -76,7 +88,7 @@ def showhost(request):
         except EmptyPage:
             host = paginator.page(paginator.num_pages)
         host_group = models.hostgroup.objects.all()
-        return render(request,'showhost.html',{'hosts':host,'hostgroups':host_group})
+        return render(request,'showhost.html',{'hosts':host,'hostgroups':host_group,"hostall":hostall,'svnall':svnall})
 
 
 
@@ -167,12 +179,15 @@ def svnupdate(request,svn_id,u_type):
     svn = svns.objects.get(id =svn_id)
     host = svn.host
     u_type = u_type.encode('utf-8')
+    global action
     if u_type == "1":
         cmd = r"svn update %s" %svn.svn_local
-        print(cmd)
+        action = u"更新"
+        print("1 is cnd:",cmd)
     elif u_type == "2":
         # version_cmd = r"svn info %s |grep Revision: |awk '{print $2}'" %svn.svn_local
         version_cmd = r"svn info %s | grep '^版本:' |awk {'print $2'}" %svn.svn_local
+        action = u"回滚"
         try:
              now_version = ordinary_ssh(host=host.host_w_ip,username=host.host_user,password=host.host_pass,port=host.host_w_port,cmd=version_cmd)
         except:
@@ -194,8 +209,9 @@ def svnupdate(request,svn_id,u_type):
     out = open(svnlog,'a')
     svnname = svn.svn_name
     ss = '<br>'+str(time.strftime('%Y-%m-%d %H:%M'))+'<br>'
-    print("webuser:----->",str(User.username))
-    result = str(User.username)+ss + svnname.encode('utf-8') + ":<br>" +result.replace('\n','<br>')
+    print("webuser:----->",str(aaa))
+    result = str(aaa)+ss + action.encode(encoding='utf-8') + svnname.encode('utf-8') + ":<br>" +result.replace('\n','<br>')
+    print("resultend--->",result)
     out.write(result.replace('<br>','\n')+'\n')
     out.write('\n-----------------------------------------------------------------\n')
     out.close()
