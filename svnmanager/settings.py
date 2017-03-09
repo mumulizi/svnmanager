@@ -23,6 +23,13 @@ WEB_ROOT = os.path.dirname(os.path.abspath(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'o@_%9+ya9i+2=ppivg_xq+msdqz*!kx^(=bl_jrhtu6rguzua='
 
+
+#session,timeout,setting,second
+# SESSION_COOKIE_AGE = 120
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# SESSION_SAVE_EVERY_REQUEST = True
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

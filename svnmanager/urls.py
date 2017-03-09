@@ -26,7 +26,12 @@ urlpatterns = [
     url(r'^showsvn/$',views.showsvn,name='showsvn'),
     url(r'^svnadd/$',views.svnadd,name='addsvn'),
     url(r'^svnlog/$',views.showsvnlog,name='svnlog'),
+    url(r'^svnedit/(?P<svn_id>[^/]+)$',views.svnedit,name='svnedit'),
+    url(r'^group/$',views.group,name='group'),
+    url(r'^addtogroup/$',views.addtogroup,name='addtogroup'),
+    url(r'^onlinecode/$',views.onlinecode,name='onlinecode'),
     url(r'^svnupdate/(?P<svn_id>[^/]+)/(?P<u_type>[^/]+)$',views.svnupdate,name='svnupdate'),
+    url(r'^pushonline/(?P<host_id>[^/]+)$',views.pushonline,name='pushonline'),
 
 
 

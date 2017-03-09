@@ -15,7 +15,6 @@ def ordinary_ssh(host,username,password,port,cmd):
     print("this is s:",s)
     # s.connect(hostname = host,port=int(port),username=username, password=password)
     s.connect(hostname = host,port=int(port),username=username, password=password)
-    print("aaaaaaa=a=a=a=a=a=a=a=:")
     stdin, stdout, stderr = s.exec_command(cmd)
     result = stdout.read()
     print("result--stdout--read--",result)
@@ -28,12 +27,12 @@ def ordinary_ssh(host,username,password,port,cmd):
 
 #验证服务器信息
 def verification_ssh(host,username,password,port,root_pwd,cmd):
-    print("%s %s %s %s %s %s ->")%(host,username,password,port,root_pwd,cmd)
+    print("%s %s %s %s %s %s -verification_ssh->")%(host,username,password,port,root_pwd,cmd)
     # root_pwd = de_str(str(settings.SECRET_KEY),str(root_pwd))
     # password = de_str(str(settings.SECRET_KEY),str(password))
     root_pwd = de_str(str(root_pwd))
     password = de_str(str(password))
-    print("--root_pwd,password--->:",root_pwd,password)
+    print("--root_pwd,password-verification_ssh-->:",root_pwd,password)
 
     s=paramiko.SSHClient()
     s.load_system_host_keys()

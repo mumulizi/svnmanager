@@ -3,6 +3,7 @@
 {% block content %}
 <div>
     <span class="label label-info"style="background-color: #62c462;font-size: 24.844px;padding:14px 4px;border-radius: 17px " >服务器{{ hostall }}台</span>
+    <span class="label label-info"style="background-color: #62c462;font-size: 24.844px;padding:14px 4px;border-radius: 17px " >服务器组{{ hostall }}</span>
     <span class="label label-info"style="background-color: #62c462;font-size: 24.844px;padding:14px 4px;border-radius: 17px " >项目数:{{ svnall }}</span>
 {#	<a href="#"><span class="label label-warning">Add Server</span></a>&nbsp;&nbsp;#}
 {#	<a href="#"><span class="label label-inverse">Del Server</span></a>#}
@@ -14,14 +15,15 @@
 </div>
 </div>
 	<hr>
+
       <table class="table table-bordered table-striped table-condensed">
 		<thead>
 			<tr>
 			<th>Host Name</th>
-			<th>Inter IP:Port</th>
-			<th>local IP:Port</th>
+			<th>公网 IP:Port</th>
+			<th>内部 IP:Port</th>
 			<th>Host User</th>
-			<th>Script Dir</th>
+{#			<th>Script Dir</th>#}
 			<th width="200">操作</th>
 			</tr>
 		</thead>
@@ -33,13 +35,13 @@
 			<td>{{host.host_w_ip}}:{{host.host_w_port}}</td>
 			<td>{{host.host_n_ip}}:{{host.host_n_port}}</td>
 			<td>{{host.host_user}}</td>
-			<td>{{host.script_dir}}</td>
+{#			<td>{{host.script_dir}}</td>#}
 			<td>
 				<div class="btn-group">
-					<a class="btn" href="#" title="Edit Server">Edit</a>
+{#					<a class="btn" href="#" title="Edit Server">Edit</a>#}
 {#					<a class="btn" href="{% url app01.views.hostedit host.id %}" title="Edit Server">Edit</a>#}
 {#					<a class="btn" href="{% url app01.views.hostdel host.id %}" title="Del Server" >Del</a>#}
-					<a class="btn" href="#" title="Del Server" >Del</a>
+{#					<a class="btn" href="#" title="Del Server" >Del</a>#}
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add Group<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 					{% for hostgroup in hostgroups %}
@@ -52,6 +54,7 @@
 			{% endfor %}
 		</tbody>
 	  </table>
+
 	  <div class="modal hide fade" id="myModal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>

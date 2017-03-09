@@ -5,16 +5,28 @@
 # c = b.decode()
 # print(c)
 
+#
+# def func():
+#     global x
+#     x = 2
+#     print 'x is', x
+#
+#     print 'Changed local x to', x
+#
+# def test():
+#     print(x)
+#
+# test()
+# print 'Value of x is', x
+import os
+from app01 import models
+import conf
 
-def func():
-    global x
-    x = 2
-    print 'x is', x
+os.environ['DJANGO_SETTINGS_MODULE'] = 'svnmanager.settings'     #s12day16 是你的setting所在的项目名
+import django
+django.setup()
 
-    print 'Changed local x to', x
-
-def test():
-    print(x)
-
-test()
-print 'Value of x is', x
+confdic = conf.configure()
+cc = confdic['readyhost']
+print(cc)
+models.hosts.objects.filter(host_w_ip=cc)

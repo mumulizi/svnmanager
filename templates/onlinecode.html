@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}<title>OnlineCode</title>{% endblock %}
+{% block content %}
+<div>
+{#	<a href="#"><span class="label label-info"> 添加</span></a>&nbsp;&nbsp;#}
+{#	<a href="#"><span class="label label-inverse">删除</span></a>#}
+<div class="pull-right">
+	<form class="form-search" method="POST">
+	<input type="text" name ="search" class="input-medium search-query" placeholder="Search">
+	<button type="submit" class="btn">Search</button>&nbsp;&nbsp;
+	</form>
+</div>
+</div>
+	<hr>
+      <table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+			<th>预发布机服务器</th>
+			<th>源目录</th>
+			<th>目标服务器</th>
+			<th>目标目录</th>
+			<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			{% for host in hosts %}
+			<tr>
+			<td><a href="#" title="readyhost">{{host.shost}}</a></td>
+			<td>{{ host.sdir}}</td>
+{#                manytomany 的获取字段使用#}
+			<td>{{ host.dhost.all|join:"、" }}</td>
+			<td>{{ host.ddir }}</td>
+			<td>
+				<div class="btn-group">
+				<a class="btn" href="{% url 'pushonline' host.id  %}" title="Push Online"><i class="icon-refresh"></i>推送</a>
+{#				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">回滚<span class="caret"></span></a>#}
+{#				<ul class="dropdown-menu">#}
+{#				<li><a href="{% url 'svnupdate' svn.id 2 %}">上一版本</a></li>#}
+{#				<li><a href="#">指定版本</a></li>#}
+{#              </ul>#}
+{#                 <a class="btn" href="{% url 'svnupdate' svn.id 2 %}" title="back svn"><i class="icon-refresh"></i>回滚</a>#}
+{##}
+				</div>
+			</td>
+			</tr>
+
+			{% endfor %}
+		</tbody>
+	  </table>
+	  
+{#	  <div class="pagination pagination-centered">#}
+{#	  <div class="pull-right"><span class="label"></span></div>#}
+{#		<ul>{% if not grouplist.has_previous %}#}
+{#			<li class="active"><a>前一页</a></li>#}
+{#			{% endif %}#}
+{#			{% if grouplist.has_previous %}#}
+{#			<li><a href="">前一页</a></li>#}
+{#			{% endif %}#}
+{#			{% if not grouplist.has_next %}#}
+{#			<li class="active"><a>后一页</a></li>#}
+{#			{% endif %}#}
+{#			{% if grouplist.has_next %}#}
+{#			<li><a href="">后一页</a></li>#}
+{#			{% endif %}#}
+{#		</ul>#}
+{#	  </div>#}
+
+{% endblock %}

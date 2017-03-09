@@ -26,7 +26,8 @@
 			<tr>
 			<td><a href="#" title="Edit Group">{{group.host_groupname}}</a></td>
 {#                jinja2模版 join用法 合并一个列表。#}
-			<td>{{group_host|join:"、"}}</td>
+{#		有问题 组多了就乱了	<td>{{group_host|join:"、"}}</td>#}
+			<td>{{group.host.all|join:"、"}}</td>
 			<td>{{group.create_date}}</td>
 			<td>{{group.create_user}}</td>
 			<td>

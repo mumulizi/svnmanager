@@ -76,3 +76,11 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(u"姓名",max_length=30)
     iphone = models.CharField(u'手机',max_length=11)
+
+class online(models.Model):
+    shost = models.GenericIPAddressField(u'预发布机',max_length=100)
+    sdir = models.CharField(max_length=100)
+    dhost = models.ManyToManyField(hosts)
+    ddir = models.CharField(max_length=100)
+    def __unicode__(self):
+        return self.shost

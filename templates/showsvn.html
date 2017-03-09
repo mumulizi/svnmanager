@@ -26,7 +26,7 @@
 		<tbody>
 			{% for svn in svns %}
 			<tr>
-			<td><a href="#" title="Edit Svn">{{svn.svn_name}}</a></td>
+			<td><a href="{% url 'svnedit' svn.id %}" title="Edit Svn">{{svn.svn_name}}</a></td>
 			<td>{{svn.svn_local}}</td>
 			<td>{{svn.svn_path}}</td>
 			<td>{{svn.host}}</td>			
