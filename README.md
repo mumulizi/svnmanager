@@ -20,9 +20,11 @@ svn更新代码时有点问题，获取当前登录用户 用了全局变量，�
 		   用户名/密码 admin/1234.abcd
 		   
 		   
+		   
+![image](https://github.com/mumulizi/svnmanager/blob/master/picture/QQ%E6%88%AA%E5%9B%BE20170228170352.png
+)
 
-		   
-		   
+
 		   
 		   
 
