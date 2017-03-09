@@ -21,8 +21,10 @@ svn更新代码时有点问题，获取当前登录用户 用了全局变量，�
 		   
 		   
 		   
-![image](https://github.com/mumulizi/svnmanager/blob/master/picture/QQ%E6%88%AA%E5%9B%BE20170228170352.png
-)
+![image](https://github.com/mumulizi/svnmanager/blob/master/picture/1.png)
+![image](https://github.com/mumulizi/svnmanager/blob/master/picture/2.png)
+![image](https://github.com/mumulizi/svnmanager/blob/master/picture/3.png)
+![image](https://github.com/mumulizi/svnmanager/blob/master/picture/4.png)
 
 
 		   
