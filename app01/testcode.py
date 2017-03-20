@@ -18,15 +18,28 @@
 #
 # test()
 # print 'Value of x is', x
-import os
-from app01 import models
-import conf
+# import os
+# from app01 import models
+# import conf
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'svnmanager.settings'     #s12day16 是你的setting所在的项目名
-import django
-django.setup()
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'svnmanager.settings'     #s12day16 是你的setting所在的项目名
+# import django
+# django.setup()
+#
+# confdic = conf.configure()
+# cc = confdic['readyhost']
+# print(cc)
+# models.hosts.objects.filter(host_w_ip=cc)
 
-confdic = conf.configure()
-cc = confdic['readyhost']
-print(cc)
-models.hosts.objects.filter(host_w_ip=cc)
+
+
+try:
+    a=1
+    c="kk"
+    d = a+c
+    print(d)
+except:
+    a = 1
+    b = 2
+    d = a+b
+    print(d)

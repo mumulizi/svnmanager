@@ -1,0 +1,22 @@
+admin|2017-03-17 16:43|回滚testsvnname|A    /svndata/repos/asdfadsfasffsdfa.txt
+更新到版本 49。
+
+-----------------------------------------------------------------
+admin|2017-03-17 16:45|回滚testsvnname|D    /svndata/repos/asdfadsfasffsdfa.txt
+更新到版本 48。
+
+-----------------------------------------------------------------
+admin|2017-03-17 16:47|回滚testsvnname|A    /svndata/repos/aaaaa.txt
+更新到版本 46。
+
+-----------------------------------------------------------------
+admin|2017-03-17 16:49|回滚testsvnname|D    /svndata/repos/aaaaa.txt
+D    /svndata/repos/adf.txt
+A    /svndata/repos/hahasuccess.txt
+更新到版本 45。
+
+-----------------------------------------------------------------
+admin|2017-03-17 16:50|回滚testsvnname|D    /svndata/repos/hahasuccess.txt
+更新到版本 44。
+
+-----------------------------------------------------------------

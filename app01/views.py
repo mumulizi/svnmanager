@@ -210,7 +210,7 @@ def svnupdate(request,svn_id,u_type):
         try:
              now_version = ordinary_ssh(host=host.host_w_ip,username=host.host_user,password=host.host_pass,port=host.host_w_port,cmd=version_cmd)
         except:
-            HttpResponse("get version fail！")
+            return HttpResponse("get version fail！")
         print now_version
         restore_version = string.atoi(now_version)-1
         cmd = r"svn up -r %d  %s" %(restore_version,svn.svn_local)
@@ -368,6 +368,8 @@ def pushonline(request,host_id):
         global resultxx
         try:
             resultxx = verification_ssh(host=sonlinehost,username='root',password=xrootpwd,port=xport,root_pwd=xrootpwd,cmd=cmd)
+            if resultxx==u"":
+                resultxx="Error......Update Faile,Please Call admin"
         except:
             resultxx = "Error......请联系管理员"
         # print(cmd)
