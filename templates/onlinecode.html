@@ -5,7 +5,7 @@
 {#	<a href="#"><span class="label label-info"> 添加</span></a>&nbsp;&nbsp;#}
 {#	<a href="#"><span class="label label-inverse">删除</span></a>#}
 <div class="pull-right">
-	<form class="form-search" method="POST">
+	<form class="form-search" method="POST">{% csrf_token %}
 	<input type="text" name ="search" class="input-medium search-query" placeholder="Search">
 	<button type="submit" class="btn">Search</button>&nbsp;&nbsp;
 	</form>
@@ -23,17 +23,29 @@
 			</tr>
 		</thead>
 		<tbody>
+{% for host in hosts %}
+    <form method="post" action="/pushonline/{{ host.id }}"> {% csrf_token %}
 
-			{% for host in hosts %}
+
 			<tr>
 			<td><a href="#" title="readyhost">{{host.shost}}</a></td>
 			<td>{{ host.sdir}}</td>
 {#                manytomany 的获取字段使用#}
-			<td>{{ host.dhost.all|join:"、" }}</td>
+{#			<td>{{ host.dhost.all|join:"、" }}</td>#}
+
+                <td>
+                    <select name="idhost" multiple="multiple">
+                    {% for i in dhost %}
+                        <option name="shabi" value="{{ i }}">{{ i}}</option>
+                    {% endfor %}
+                    </select>
+                </td>
+
 			<td>{{ host.ddir }}</td>
 			<td>
-				<div class="btn-group">
-				<a class="btn" href="{% url 'pushonline' host.id  %}" title="Push Online"><i class="icon-refresh"></i>推送</a>
+{#				<div class="btn-group">#}
+				<div>
+        <input type="submit" value="推送">
 {#				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">回滚<span class="caret"></span></a>#}
 {#				<ul class="dropdown-menu">#}
 {#				<li><a href="{% url 'svnupdate' svn.id 2 %}">上一版本</a></li>#}
@@ -44,11 +56,12 @@
 				</div>
 			</td>
 			</tr>
+    </form>
 
 			{% endfor %}
 		</tbody>
 	  </table>
-	  
+
 {#	  <div class="pagination pagination-centered">#}
 {#	  <div class="pull-right"><span class="label"></span></div>#}
 {#		<ul>{% if not grouplist.has_previous %}#}

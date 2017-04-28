@@ -1,0 +1,68 @@
+
+!!!!!!!!!一定要是www(自己web目录的www用户)用户执行。里面的权限也都得是www的权限，不然会出现各种问题。!!!!!!!
+
+执行方式  nohup python manage.py  runserver 0.0.0.0:8080 >> svnmanager.log &
+
+!!!!!!!!!一定要是xiaogangtao用户执行。里面的权限也都得是xiaogangtao的权限，不然会出现各种问题。!!!!!!!
+
+
+
+
+svnmanager.log是记录的启动日志文件
+操作日志在app01下的log目录里
+
+
+1:20170415 修改onlinecode.html  比较 onlnecode.html和onlinecode.html.201704151106的这个文件。。
+没找出不同，在本地win7测试是正常的，在这里就不正常，后用了本地的文件，一切正常。需要比较找出问题。
+具体的问题是 当推送的时候 获取的host.id 一直是第一个的host的id  用了本地的html后测试正常。
+
+
+修改的东西
+1：views文件的onlinecode函数和pushonline
+具体比较备份后的文件。大致就是获取所有dhost主机 用于在onlinecode.html展示 可选框
+2：request.user.username   获取当前用户，用于记录日志。去掉了之前定义全局 aaa 变量获取当前用户的笨方法，笨方法当服务重启后aaa变量就未定义了，所以当时设置超时时间，强制用户重新登录。现在正常。
+3：添加onlinecode函数的搜索选项，其中没有使用 dhost。具体看代码和代码注释。
+
+20170417  
+1：修改表结构models文件，添加rsync同步时排除的东西。登录admin后台可以发现多了sexcludedir字段。
+2：修改views 添加 rsync参数 --exclude-form参数 
+3：修改admin.py 让admin页面的online可以多个字段展示。
+
+20170421
+django和apache结合。大致就是安装 mod_wsgi-4.5.2.tar.gz
+然后重新编译python以及之前安装的N个第三方库如:paramiko pip django setuptools等等，根据提示安装吧，编译python时 添加 --enable-shared参数。根据报错去做安装调试吧。这里不做介绍
+修改apache配置文件all.conf  修改项目setting.py文件   添加django.wsgi文件
+关键在与配置文件的配置,和目录下权限的配置。详细参考git上的记录
+
+20170424
+views.py添加IP限制  详细见login代码  想美观一点就写一个美观的403页面。涉及到隐私已注释掉，线上用了。
+
+
+需要留意svn up后的文件权限是不是www！！！已修改
+
+20170425
+修改models的host字段，添加允许密码处为空，blank=True,null=True
+删除 admin后台host选项的密码
+修改views.py  读取os.system后的结果，出现ascii这中结果，把readlines改成了read一切正常
+取消了svnup和回滚的时候密码验证选项 几乎用不到了app01function.py这个文件了
+取消了rsync推送代码的时候密码验证选项
+取消密码验证和svnup的时候权限问题一起解决。普通用户登录 重新 svn co，然后平台更新的时候重新输入验证选项。  取消密码验证之后，盘古发布平台就只能和svn放在一个服务器上了，不能把svn代码按项目发布到其他服务器上了，只能通过rsync的方式推送，前提是sshkey打通。
+添加获取所有日志在前端展示
+
+
+20170426
+添加权限控制，具体使用方式登录admin，然后在权限表里操作。
+权限名称 就是models中定义的权限
+URL名称 就是具体访问的某个url 就是在urls.py里的name字段
+以上两个字段必须和models中和url中的一致。
+然后在views.py里对该函数添加装饰器。即@check_permission
+添加这个为拒绝的权限，如果普通用户需要访问，需要单独对普通用户授权。
+点击admin 的User选项，具体的赋权操作
+
+20170428
+添加项目权限控制，实现按人员和项目进行权限的划分。具体登录admin后台查看使用。
+一个是svn获取到发布机的权限，一个是从发布机推送到线上web机的权限
+大致就是获取当前用户和项目id 然后获取数据库中存的用户和目录进行比较。
+
+
+

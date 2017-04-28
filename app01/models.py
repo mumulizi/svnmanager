@@ -7,12 +7,12 @@ from django.contrib.auth.models import User
 class hosts(models.Model):
     host_name = models.CharField(max_length=30)
     host_user = models.CharField(max_length=30)
-    host_pass = models.CharField(max_length=50)
+    host_pass = models.CharField(max_length=50,blank=True,null=True)
     host_w_ip = models.GenericIPAddressField()
     host_w_port = models.PositiveIntegerField()
     host_n_ip = models.GenericIPAddressField()
     host_n_port = models.PositiveIntegerField()
-    host_root_pwd = models.CharField(max_length=50)
+    host_root_pwd = models.CharField(max_length=50,blank=True,null=True)
     script_dir = models.CharField(max_length=100)
     host_description = models.TextField(blank=True)
     create_user = models.CharField(max_length=10)
@@ -80,7 +80,76 @@ class UserProfile(models.Model):
 class online(models.Model):
     shost = models.GenericIPAddressField(u'预发布机',max_length=100)
     sdir = models.CharField(max_length=100)
+    sexcludedir = models.CharField(max_length=100,blank=True,null=True)
     dhost = models.ManyToManyField(hosts)
     ddir = models.CharField(max_length=100)
     def __unicode__(self):
         return self.shost
+
+class cmdb(models.Model):
+    AssetType = models.CharField(u'资产类型',max_length=100)
+    AssetSn = models.CharField(u'资产编号',max_length=50)
+    # ServerName = models.ManyToManyField(hosts)
+    ServerName = models.CharField(u'资产名',max_length=100)
+    IP = models.GenericIPAddressField(u'IP地址',max_length=50,blank=True,null=True)
+    MAC = models.CharField(u'MAC地址',max_length=50,blank=True,null=True)
+    ServerType = models.CharField(u'资产型号',max_length=50)
+    ServerSN = models.CharField(u'资产SN',max_length=50)
+    Disk = models.CharField(u'硬盘',max_length=50,blank=True,null=True)
+    DiskSN = models.CharField(u'硬盘序列号',max_length=50,blank=True,null=True)
+    RaidInfo = models.CharField(u'Raid信息',max_length=100,blank=True,null=True)
+    Mem = models.CharField(u'内存',max_length=50,blank=True,null=True)
+    CPU = models.CharField(max_length=100,blank=True,null=True)
+    iDracIP = models.GenericIPAddressField(u'管理IP',max_length=50,blank=True,null=True)
+    Memo = models.CharField(u'备注',max_length=200,blank=True,null=True)
+
+    def __unicode__(self):
+        return self.ServerName
+
+
+
+class Permission(models.Model):
+    name = models.CharField("权限名称", max_length=64)
+    url = models.CharField('URL名称', max_length=255)
+    chioces = ((1, 'GET'), (2, 'POST'))
+    per_method = models.SmallIntegerField('请求方法', choices=chioces, default=1)
+    argument_list = models.CharField('参数列表', max_length=255, help_text='多个参数之间用英文半角逗号隔开', blank=True, null=True)
+    describe = models.CharField('描述', max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '页面权限表'
+        verbose_name_plural = verbose_name
+        #权限信息，这里定义的权限的名字，后面是描述信息，描述信息是在django admin中显示权限用的
+        permissions = (
+            ('views_svns_list', '查看svn版本库信息表'),
+            ('views_onlinecode_info', '查看推送代码详细信息表'),
+            ('views_assets_info', '查看资产详细信息表'),
+        )
+
+
+
+
+
+class svn_permission(models.Model):
+    permission_info = models.CharField(max_length=100)
+    web_users = models.ManyToManyField(User)
+    svn_projects = models.ManyToManyField(svns)
+    def __unicode__(self):
+        return self.permission_info
+    class Meta:
+        verbose_name = 'SVN权限表'
+        verbose_name_plural = verbose_name
+
+class online_permission(models.Model):
+    permission_info = models.CharField(max_length=100,blank=True,null=True)
+    web_users = models.CharField(max_length=100)
+    src_dir = models.TextField()
+
+    def __unicode__(self):
+        return self.permission_info
+    class Meta:
+        verbose_name = '上线代码权限表'
+        verbose_name_plural = verbose_name

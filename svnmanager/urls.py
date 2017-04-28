@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^onlinecode/$',views.onlinecode,name='onlinecode'),
     url(r'^svnupdate/(?P<svn_id>[^/]+)/(?P<u_type>[^/]+)$',views.svnupdate,name='svnupdate'),
     url(r'^pushonline/(?P<host_id>[^/]+)$',views.pushonline,name='pushonline'),
-
+    url(r'^assets/$',views.assetslist,name='assets'),
 
 
 ]

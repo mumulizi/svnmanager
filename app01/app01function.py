@@ -32,13 +32,13 @@ def verification_ssh(host,username,password,port,root_pwd,cmd):
     # password = de_str(str(settings.SECRET_KEY),str(password))
     root_pwd = de_str(str(root_pwd))
     password = de_str(str(password))
-    print("--root_pwd,password-verification_ssh-->:",root_pwd,password)
+    #print("--root_pwd,password-verification_ssh-->:",root_pwd,password)
 
     s=paramiko.SSHClient()
     s.load_system_host_keys()
     s.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     s.connect(hostname = host,port=int(port),username=username, password=password)
-    print("%s %s %s %s")%(host,port,username,password)
+    #print("%s %s %s %s")%(host,port,username,password)
     if username != 'root':
         ssh = s.invoke_shell()
         time.sleep(0.1)

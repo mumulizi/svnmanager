@@ -2,11 +2,11 @@
 {% block title %}<title>Show Svn</title>{% endblock %}
 {% block content %}
 <div>
-	<a href="{% url 'addsvn' %}"><span class="label label-info"> 添加</span></a>&nbsp;&nbsp;
+{#	<a href="{% url 'addsvn' %}"><span class="label label-info"> 添加</span></a>&nbsp;&nbsp;#}
 	<a href="{% url 'svnlog' %}"><span class="label label-success">查看日志</span></a>&nbsp;&nbsp;
-	<a href="#"><span class="label label-inverse">删除</span></a>
+{#	<a href="#"><span class="label label-inverse">删除</span></a>#}
 <div class="pull-right">
-	<form class="form-search" method="POST">
+	<form class="form-search" method="POST">{% csrf_token %}
 	<input type="text" name ="search" class="input-medium search-query" placeholder="Search">
 	<button type="submit" class="btn">Search</button>&nbsp;&nbsp;
 	</form>
@@ -17,9 +17,9 @@
 		<thead>
 			<tr>
 			<th>项目名</th>
-			<th>发布到目录</th>
 			<th>SVN地址</th>
 			<th>发布到</th>
+			<th>发布到目录</th>
 			<th width="150">操作</th>
 			</tr>
 		</thead>
@@ -27,9 +27,9 @@
 			{% for svn in svns %}
 			<tr>
 			<td><a data-toggle="modal" data-target="#myModal1" href="{% url 'svnedit' svn.id %}" title="Edit Svn">{{svn.svn_name}}</a></td>
-			<td>{{svn.svn_local}}</td>
 			<td>{{svn.svn_path}}</td>
 			<td>{{svn.host}}</td>			
+			<td>{{svn.svn_local}}</td>
 			<td>
 				<div class="btn-group">
 				<a class="btn" data-toggle="modal" data-target="#myModal" href="{% url 'svnupdate' svn.id 1 %}" title="Update svn"><i class="icon-refresh" ></i>更新</a>

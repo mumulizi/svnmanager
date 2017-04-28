@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}<title>Show Svn</title>{% endblock %}
+{% block content %}
+<div>
+	<a href="{% url 'addsvn' %}"><span class="label label-info"> 添加</span></a>&nbsp;&nbsp;
+	<a href="{% url 'svnlog' %}"><span class="label label-success">查看日志</span></a>&nbsp;&nbsp;
+	<a href="#"><span class="label label-inverse">删除</span></a>
+        <div class="pull-right">
+        <form class="form-search" method="POST">
+	<input type="text" name ="search" class="input-medium search-query" placeholder="Search">
+	<button type="submit" class="btn">Search</button>&nbsp;&nbsp;
+	</form>
+</div>
+</div>
+	<hr>
+      <table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+			<th>项目名</th>
+			<th>发布到目录</th>
+			<th>SVN地址</th>
+			<th>发布到</th>
+			<th width="150">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for svn in svns %}
+			<tr>
+			<td><a data-toggle="modal" data-target="#myModal1" href="{% url 'svnedit' svn.id %}" title="Edit Svn">{{svn.svn_name}}</a></td>
+			<td>{{svn.svn_local}}</td>
+			<td>{{svn.svn_path}}</td>
+			<td>{{svn.host}}</td>			
+			<td>
+				<div class="btn-group">
+				<a class="btn" data-toggle="modal" data-target="#myModal" href="{% url 'svnupdate' svn.id 1 %}" title="Update svn"><i class="icon-refresh" ></i>更新</a>
+{#				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">回滚<span class="caret"></span></a>#}
+{#				<ul class="dropdown-menu">#}
+{#				<li><a href="{% url 'svnupdate' svn.id 2 %}">上一版本</a></li>#}
+{#				<li><a href="#">指定版本</a></li>#}
+{#              </ul>#}
+                 <a class="btn" data-toggle="modal" data-target="#myModal2" href="{% url 'svnupdate' svn.id 2 %}" title="back svn"><i class="icon-refresh" ></i>回滚</a>
+
+				</div>
+			</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	  </table>
+	  
+	  <div class="pagination pagination-centered">
+	  <div class="pull-right"><span class="label">{{svns}}</span></div>
+		<ul>{% if not svns.has_previous %}
+			<li class="active"><a>前一页</a></li>
+			{% endif %}
+			{% if svns.has_previous %}
+			<li><a href="?page={{ svns.previous_page_number }}">前一页</a></li>
+			{% endif %}
+			{% if not svns.has_next %}
+			<li class="active"><a>后一页</a></li>
+			{% endif %}
+			{% if svns.has_next %}
+			<li><a href="?page={{ svns.next_page_number }}">后一页</a></li>
+			{% endif %}
+		</ul>
+	  </div>
+
+{#<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">#}
+{#	开始演示模态框#}
+{#</button>#}
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					更新中，请勿关闭、刷新......注意看下面的返回的结果
+				</h4>
+			</div>
+			<div class="modal-body">
+				请稍候
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+{#				<button type="button" class="btn btn-primary">#}
+{#					提交更改#}
+{#				</button>#}
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+
+
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel1">
+					你没有权限编辑此条记录，请联系管理员
+				</h4>
+			</div>
+{#			<div class="modal-body">#}
+{#				请稍候#}
+{#			</div>#}
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+{#				<button type="button" class="btn btn-primary">#}
+{#					提交更改#}
+{#				</button>#}
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel2">
+					回滚中，请勿关闭、刷新......注意看下面的返回的结果
+				</h4>
+			</div>
+			<div class="modal-body">
+				请稍候
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+{#				<button type="button" class="btn btn-primary">#}
+{#					提交更改#}
+{#				</button>#}
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+
+{% endblock %}

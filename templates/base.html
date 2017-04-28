@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    {% block title %}<title>代码发布</title>{% endblock %}
+    {% block title %}<title>Rocen盘古发布系统</title>{% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -22,14 +22,14 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="{% url 'showhost' %}">代码发布系统</a>
+          <a class="brand" href="{% url 'showhost' %}">Rocen盘古发布系统</a>
 		  <div class="nav-collapse collapse">
 		  <ul class="nav pull-right">
 			<li class="dropdown"> 
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{user.username}} <b class="caret"></b></a> 
 			<ul class="dropdown-menu"> 
 {#			<li><a href="{% url aop.views.edituser user.id %}"><i class="icon-user"></i> 个人资料</a></li>#}
-			<li><a href="#"><i class="icon-user"></i> 个人资料</a></li>
+			{#<li><a href="#"><i class="icon-user"></i> 个人资料</a></li>#}
 			<li class="divider"></li>
 			<li><a href="{% url 'logout' %}"><i class="icon-off"></i> 注销</a></li> </ul> </li>
 		  </ul>
@@ -42,10 +42,18 @@
   <div class="row-fluid">
     <div class="span2">
       <ul class="nav nav-tabs nav-stacked">
+
+
 		<li><a href="/"><i class="icon-th-list"></i> Server</a></li>
-		<li><a href="{% url 'showsvn' %}"><i class="icon-th"></i> Svn</a></li>
-		<li><a href="{% url 'group' %}"><i class="icon-lock"></i> Group</a></li>
-        <li><a href="{% url 'onlinecode' %}"><i class="icon-lock"></i> OnLineCode</a></li>
+		<li><a href="{% url 'showsvn' %}"><i class="icon-arrow-down"></i> Svn</a></li>
+		<li><a href="{% url 'group' %}"><i class="icon-briefcase"></i> Group</a></li>
+                <li><a href="{% url 'onlinecode' %}"><i class="icon-arrow-right"></i> OnLineCode</a></li>
+                <li><a href="{% url 'assets' %}"><i class="icon-align-justify"></i> assets</a></li>
+
+{#		<li><a href="/"><i class="icon-th-list"></i> Server</a></li> #}
+{#		<li><a href="{% url 'showsvn' %}"><i class="icon-th"></i> Svn</a></li> #}
+{#		<li><a href="{% url 'group' %}"><i class="icon-lock"></i> Group</a></li> #}
+{#        <li><a href="{% url 'onlinecode' %}"><i class="icon-lock"></i> OnLineCode</a></li>  #}
 {#          暂时去掉保留功能#}
 {#		<li><a href="#"><i class="icon-lock"></i> Task</a></li>#}
 {#		<li><a href="#"><i class="icon-lock"></i> Script</a></li>#}

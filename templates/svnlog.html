@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 {% block title %}<title>Svn log</title>{% endblock %}
 {% block content %}
-	<span class="label label-success">Svn {{svnname}} update result!</span>
-	<hr>
-	<div class="well"><p class="text-info">{% autoescape off %}{{result}}{% endautoescape %}</p></div>
+    <form method="post" action="">{% csrf_token %}
+        <span style="border-radius: 10px;" class="label label-success">choice log
+    <select name='logdate'>
+    {% for i in resp %}
+  <option name='nimabi' value="{{ i }}">{{ i }}</option>
+    {% endfor %}
+</select></span>
+    <input class="btn btn-success" type="submit" value="确定">
+    </form>
+        <hr>
+        <div class="well"><p class="text-info">{% autoescape off %}{{result}}{% endautoescape %}</p></div>
 
 {% endblock %}

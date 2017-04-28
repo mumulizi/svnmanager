@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}<title>Show assets_list</title>{% endblock %}
+{% block content %}
+<div>
+	{#<a href="#"><span class="label label-info"> 添加</span></a>&nbsp;&nbsp;#}
+	{#<a href="#"><span class="label label-inverse">删除</span></a>#}
+<div class="pull-right">
+	<form class="form-search" method="POST">
+	<input type="text" name ="search" class="input-medium search-query" placeholder="Search">
+	<button type="submit" class="btn">Search</button>&nbsp;&nbsp;
+	</form>
+</div>
+</div>
+
+      <table class="table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+			<th>资产类型</th>
+            <th>资产编号</th>
+			<th>资产名</th>
+			<th>IP地址</th>
+			<th>MAC地址</th>
+			<th>资产型号</th>
+			<th>资产SN</th>
+			<th>硬盘</th>
+{#			<th>硬盘序列号</th>#}
+			<th>Raid信息</th>
+			<th>内存</th>
+			<th>CPU</th>
+			<th>管理IP</th>
+
+{#			<th>Script Dir</th>#}
+			<th>备注</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for aname in asset_name %}
+			<tr>
+{#			<td><a href="{% url app01.views.hostedit host.id %}" title="Edit Server">{{host.host_name}}</a></td>#}
+			<td><a data-toggle="modal" data-target="#myModal1" href="#" title="详细信息">{{aname.AssetType}}</a></td>
+			<td>{{aname.AssetSn}}</td>
+			<td>{{aname.ServerName}}</td>
+			<td>{{aname.IP}}</td>
+			<td>{{aname.MAC}}</td>
+			<td>{{aname.ServerType}}</td>
+			<td>{{aname.ServerSN}}</td>
+			<td>{{aname.Disk}}</td>
+			<td>{{aname.RaidInfo}}</td>
+			<td>{{aname.Mem}}</td>
+			<td>{{aname.CPU}}</td>
+			<td>{{aname.iDracIP}}</td>
+			<td>{{aname.Memo}}</td>
+{#			<td>{{host.script_dir}}</td>#}
+{#			<td>#}
+{#				<div class="btn-group">#}
+{#					<a class="btn" href="#" title="Edit Server">Edit</a>#}
+{#					<a class="btn" href="{% url app01.views.hostedit host.id %}" title="Edit Server">Edit</a>#}
+{#					<a class="btn" href="{% url app01.views.hostdel host.id %}" title="Del Server" >Del</a>#}
+{#					<a class="btn" href="#" title="Del Server" >Del</a>#}
+{#					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add Group<span class="caret"></span></a>#}
+{#					<ul class="dropdown-menu">#}
+{#					{% for hostgroup in hostgroups %}#}
+{#					<li><a href="#" name="addservergroup" id="{{hostgroup.id}}" value="{{host.id}}">{{hostgroup.host_groupname}}</a></li>#}
+{#					{% endfor %}#}
+{#					</ul>#}
+{#				</div>#}
+{#			</td>#}
+			</tr>
+			{% endfor %}
+		</tbody>
+	  </table>
+
+	  <div class="modal hide fade" id="myModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3>Add Group Status</h3>
+		</div>
+	  <div class="modal-body">
+		<span class="label label-success" id="addgroupstatus"></span>
+	  </div>
+	  </div>	
+	  
+  <div class="pagination pagination-centered">
+	  <div class="pull-right"><span class="label">{{hosts}}</span></div>
+		<ul>{% if not hosts.has_previous %}
+			<li class="active"><a>前一页</a></li>
+			{% endif %}
+			{% if hosts.has_previous %}
+			<li><a href="?page={{ hosts.previous_page_number }}">前一页</a></li>
+			{% endif %}
+			{% if not hosts.has_next %}
+			<li class="active"><a>后一页</a></li>
+			{% endif %}
+			{% if hosts.has_next %}
+			<li><a href="?page={{ hosts.next_page_number }}">后一页</a></li>
+			{% endif %}
+		</ul>
+	  </div>
+
+
+
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel1">
+					主机资产详细信息
+				</h4>
+                {{ test }}
+			</div>
+{#			<div class="modal-body">#}
+{#				请稍候#}
+{#			</div>#}
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+{#				<button type="button" class="btn btn-primary">#}
+{#					提交更改#}
+{#				</button>#}
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+
+
+
+
+{% endblock %}
