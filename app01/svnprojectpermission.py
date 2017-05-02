@@ -20,50 +20,36 @@ def perm_svnproject_check(request,**kwargs):
         if k=='svn_id':
             print'v',v
             adf = str(models.svns.objects.get(id=v))
-            print("web submit host",adf)
-
-    sql_infos = models.svn_permission.objects.all()
-    # print("SQL_infos",sql_infos)
-    user = []
-    projects = []
-    all_user_project = []
-    for sql_info in sql_infos:
-        sql_users = sql_info.web_users.all()
-
-        Sql_projects = sql_info.svn_projects.all()
-
-        # print("SQL_users",sql_users)
-        # print('Sql_project',Sql_projects)
-        all_user_project.append(sql_users)
-        all_user_project.append(Sql_projects)
-        # print('----all--',all_user_project)
-        userlist = []
-        projectlist = []
-        for userend in sql_users:
-            userlist.append(str(userend))
-
-            # print('urllist',userlist)
-        for projectend in Sql_projects:
-            projectlist.append(str(projectend))
-            # print"projectend",projectlist
-        abc = len(userlist)
-        print(abc)
-        userlist.append(projectlist)
-        print"end",userlist
+            print("web submit svnproject",adf)
+            all_list = []
+            sql_infos = models.svn_permission.objects.all()
+            for info in sql_infos:
+                users = info.web_users
+                all_list.append(users)
+                svn_pro = str(info.svn_projects).split(',')
+                all_list.append(svn_pro)
+                print("user,svn_pro",users,svn_pro)
+            print("all_list",all_list)
+            webuser = str(request.user.username)
+            if webuser in all_list:
+                num = all_list.index(webuser)
+                print"user success"
+                print("num",num)
+                webdir = str(adf)
+                if adf in all_list[num+1]:
+                    print("--success--")
+                    return True
+                else:
+                    print("fail")
+                    #print "fail user,all_list[num+1],adf",all_list,all_list[num+1],adf
+                    return False
+            else:
+                print("---no include user---fail--- ")
+                return False
 
 
-        print("webuser-----",request.user.username)
-        print("adf------",adf)
-        if request.user.username in userlist and adf in userlist[abc]:
-            print"userlist[0]",userlist
-            print'userlost[abc]',userlist[abc]
-            print("----success----")
-            return True
-        else:
-            print("---fail--")
-            print"userlist[0]",userlist
-            print'userlost[abc]',userlist[abc]
-            return False
+
+
 
 
 def check_svnproject_permission(fun):
@@ -72,4 +58,3 @@ def check_svnproject_permission(fun):
             return fun(request, *args, **kwargs)
         return render(request, 'forbiden.html', locals())
     return wapper
-
