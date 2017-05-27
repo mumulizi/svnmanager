@@ -14,7 +14,7 @@ def perm_svnproject_check(request,**kwargs):
     print "---->urlname:",url_name
     kw = url_obj.kwargs
     print("kwargs",kw)
-    print(type(kw))
+   # print(type(kw))
 
     for k,v in kw.items():
         if k=='svn_id':
@@ -29,7 +29,7 @@ def perm_svnproject_check(request,**kwargs):
                 svn_pro = str(info.svn_projects).split(',')
                 all_list.append(svn_pro)
                 print("user,svn_pro",users,svn_pro)
-            print("all_list",all_list)
+            #print("all_list",all_list)
             webuser = str(request.user.username)
             if webuser in all_list:
                 num = all_list.index(webuser)
@@ -58,3 +58,4 @@ def check_svnproject_permission(fun):
             return fun(request, *args, **kwargs)
         return render(request, 'forbiden.html', locals())
     return wapper
+

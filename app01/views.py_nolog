@@ -19,7 +19,7 @@ sys.setdefaultencoding('utf-8')
 
 def login(request):
     #登录功能,允许访问的ip
-    ip_list=['211.155.82.163','124.202.168.170']
+    ip_list=['127.0.0.1']
     ip = request.META['REMOTE_ADDR'] 
     print"-----------IP--->>:",ip
     if ip not in ip_list:

@@ -3,6 +3,12 @@
 {% block content %}
 	<span class="label label-success">success</span>
 	<hr>
-	<div class="well"><p class="text-info">{% autoescape off %}{{result}}{% endautoescape %}</p></div>
+    
+        {% for i in result %}
+        <div class="well">
+            <p class="text-info" style="font-size: 19px">
+
+        {% autoescape off %}{{i}}{% endautoescape %}</p></div>
+        {% endfor %}
 
 {% endblock %}

@@ -22,7 +22,16 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="{% url 'showhost' %}">Rocen盘古发布系统</a>
+         <ul class="nav navbar-nav gct">
+             <li style="padding-right: 50px;color: #ffffff"> <a href="{% url 'showhost' %}" style="color: #ffffff"><b style="color: #fffff0">盘古运维系统</b></a></li>
+                <li class="" >
+                <a href="{% url 'showhost' %}" class="droptown-toggle" >发布管理</a>
+                </li>
+
+                <li class="" >
+                <a href="{% url 'cronindex' %}" class="droptown-toggle">Crontab管理</a>
+                </li>
+           </ul>
 		  <div class="nav-collapse collapse">
 		  <ul class="nav pull-right">
 			<li class="dropdown"> 
@@ -37,7 +46,7 @@
         </div>
       </div>
     </div>
-
+{% block fewbody %}
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span2">
@@ -61,12 +70,13 @@
 	  </ul>
     </div>
     <div class="box span10">
-	
+{% endblock %}
 	{% block content %}{% endblock %}
 	
     </div><!-- span 10 -->
   </div>
 </div>
+
     <footer>
     </footer>
     <!-- Le javascript
@@ -74,7 +84,8 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/static/js/jquery.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
-	
+	    <script src="/static/js/input_control.js"></script>
+<script src="/static/js/jquery.validate.js"></script>
 	<script src="/static/js/aop.js"></script>
 	<!--<script type="text/javascript">
 	 $(document).ready(function(){

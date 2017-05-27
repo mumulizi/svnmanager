@@ -133,15 +133,29 @@ class Permission(models.Model):
 
 
 
+#class svn_permission(models.Model):
+#    permission_info = models.CharField(max_length=100)
+#    web_users = models.ManyToManyField(User)
+#    svn_projects = models.ManyToManyField(svns)
+#    def __unicode__(self):
+#        return self.permission_info
+#    class Meta:
+#        verbose_name = 'SVN权限表'
+#        verbose_name_plural = verbose_name
+
+
+
 class svn_permission(models.Model):
-    permission_info = models.CharField(max_length=100)
-    web_users = models.ManyToManyField(User)
-    svn_projects = models.ManyToManyField(svns)
+    permission_info = models.CharField(max_length=100,blank=True,null=True)
+    web_users = models.CharField(max_length=100)
+    svn_projects = models.TextField()
+
     def __unicode__(self):
         return self.permission_info
     class Meta:
         verbose_name = 'SVN权限表'
         verbose_name_plural = verbose_name
+
 
 class online_permission(models.Model):
     permission_info = models.CharField(max_length=100,blank=True,null=True)

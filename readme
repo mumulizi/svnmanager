@@ -1,10 +1,6 @@
 
-!!!!!!!!!一定要是www(自己web目录的www用户)用户执行。里面的权限也都得是www的权限，不然会出现各种问题。!!!!!!!
 
 执行方式  nohup python manage.py  runserver 0.0.0.0:8080 >> svnmanager.log &
-
-!!!!!!!!!一定要是xiaogangtao用户执行。里面的权限也都得是xiaogangtao的权限，不然会出现各种问题。!!!!!!!
-
 
 
 
@@ -35,10 +31,10 @@ django和apache结合。大致就是安装 mod_wsgi-4.5.2.tar.gz
 关键在与配置文件的配置,和目录下权限的配置。详细参考git上的记录
 
 20170424
-views.py添加IP限制  详细见login代码  想美观一点就写一个美观的403页面。涉及到隐私已注释掉，线上用了。
+views.py添加IP限制  详细见login代码  想美观一点就写一个美观的403页面。
 
 
-需要留意svn up后的文件权限是不是www！！！已修改
+需要留意svn up后的文件权限是不是www！！！以修改
 
 20170425
 修改models的host字段，添加允许密码处为空，blank=True,null=True
@@ -61,8 +57,14 @@ URL名称 就是具体访问的某个url 就是在urls.py里的name字段
 
 20170428
 添加项目权限控制，实现按人员和项目进行权限的划分。具体登录admin后台查看使用。
-一个是svn获取到发布机的权限，一个是从发布机推送到线上web机的权限
-大致就是获取当前用户和项目id 然后获取数据库中存的用户和目录进行比较。
+添加cmdb功能
 
+20170518
+修改前端推送的时候的页面显示问题
+添加 pushcode.html
+修改views pushcode函数，把resp结果以")"分割转成列表形式，便于 pushcode.html循环列表读出返回的结果
+去除 推送的时候推送 .svn的信息 ，在rsync_exclude_file内添加
 
+20170523
+开始计划管理平台的编写
 

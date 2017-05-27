@@ -1,8 +1,0 @@
-1：views 定义的全局变量 user 总是运行一会 在更新就报错。退出再进去才行。
-  File "C:\Users\Administrator\PycharmProjects\svnmanager\app01\views.py", line 197, in svnupdate
-    print("=========webuser==>>>>>:",user)
-NameError: global name 'user' is not defined
-
-百度如何python 获取另一个函数的变量
-
-2：

@@ -13,9 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url,include
 from django.contrib import admin
 from app01 import views
+from cronapp import urls as cron_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -33,6 +34,6 @@ urlpatterns = [
     url(r'^svnupdate/(?P<svn_id>[^/]+)/(?P<u_type>[^/]+)$',views.svnupdate,name='svnupdate'),
     url(r'^pushonline/(?P<host_id>[^/]+)$',views.pushonline,name='pushonline'),
     url(r'^assets/$',views.assetslist,name='assets'),
-
+    url(r'^cron/',include(cron_urls)),
 
 ]

@@ -14,7 +14,7 @@ def perm_online_check(request,**kwargs):
     print "---->urlname:",url_name
     kw = url_obj.kwargs
     print("kwargs",kw)
-    print(type(kw))
+   # print(type(kw))
 
     for k,v in kw.items():
         print(k,v)
@@ -26,6 +26,7 @@ def perm_online_check(request,**kwargs):
             print("adf is ",adf)
             print("web submit host",adf)
 
+
             onlineinfos = models.online_permission.objects.all()
             all_list = []
             for info in onlineinfos:
@@ -34,7 +35,7 @@ def perm_online_check(request,**kwargs):
                 sdirs = str(info.src_dir).split(',')
                 all_list.append(sdirs)
                 print"user,sdir",users,sdirs
-            print("=======",all_list)
+            #print("=======",all_list)
             webuser = str(request.user.username)
             if webuser in all_list:
                 num = all_list.index(webuser)
@@ -50,6 +51,7 @@ def perm_online_check(request,**kwargs):
                 print("---no include user---fail--- ")
                 return False
 
+        print("webuser-----",request.user.username)
 
 def check_online_permission(fun):
     def wapper(request, *args, **kwargs):

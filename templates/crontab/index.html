@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}<title>crontab</title>{% endblock %}
+{% block fewbody %}
+
+
+
+<div>
+    <span style='font-size: 20px; padding: 1% 13%;'>
+          <i class='icon-wrench'></i>计划任务管理
+    </span>
+    <span style='padding: 1% 30%'><a class="btn btn-primary " data-toggle="modal" data-target="#myModal"  title="Update svn">新增计划任务</a></span>
+</div>
+
+<div style='padding: 1% 13% 0% 10%'>
+      <table class="table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+			<th>id号</th>
+			<th>任务名</th>
+			<th>状态</th>
+			<th>时间规则</th>
+			<th>命令</th>
+			<th>服务器IP</th>
+			<th>功能备注</th>
+			<th>运行者</th>
+			<th>操作</th>
+			<th>创建人</th>
+			<th>logfile</th>
+{#			<th>Host User</th>#}
+{#			<th>Script Dir</th>#}
+			</tr>
+		</thead>
+		<tbody>
+        {% for cron in cron_details  %}
+			<tr>
+{#			<td><a href="{% url app01.views.hostedit host.id %}" title="Edit Server">{{host.host_name}}</a></td>#}
+			<td>{{ cron.id }}</td>
+			<td><a data-toggle="modal" data-target="#myModal1" href="#" title="详细信息">{{ cron.cron_name }}</a></td>
+			<td>{{ cron.cron_status }}</td>
+			<td>{{ cron.cron_rule }}</td>
+			<td>{{ cron.cron_cmd }}</td>
+			<td>{{ cron.cron_service_ip }}</td>
+			<td>{{ cron.crom_memo }}</td>
+			<td>{{ cron.cron_run_user }}</td>
+			<td>
+                <div class="btn-group">
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">操作<span class="caret"></span></a>
+				<ul class="dropdown-menu">
+				<li><a href="{% url 'cron_edit' cron.id %}">编辑</a></li>
+				<li><a href="{% url 'cron_delete' cron.id %}">删除</a></li>
+				<li><a href="{% url 'cron_stop' cron.id %}">禁用</a></li>
+				<li><a href="{% url 'cron_run' cron.id %}">启用</a></li>
+              </ul>
+				</div>
+
+            </td>
+			<td>{{ cron.cron_owner }}</td>
+			<td><button class='btn btn-info'>获取日志</button></td>
+{#			<td>{{host.host_user}}</td>#}
+{#			<td>{{host.script_dir}}</td>#}
+			</tr>
+        {% endfor %}
+		</tbody>
+	  </table>
+
+</div>
+
+
+
+{#style="display: none;" 未加这个样式的时候这个模态框总是遮挡住正常该显示的页面，按钮无法按，F12可以看见模态框的阴影。加上后就不显示了#}
+    <div style="display: none;" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					新增计划任务
+				</h4>
+			</div>
+			<div class="modal-body">
+				<h3>Add Cron</h3>
+
+	<form id="register-form" method="POST" action="{% url 'cronindex' %}" class="form-horizontal"> {% csrf_token %}
+  <div class="control-group">
+    <label class="control-label" for="cron_name">任务名:</label>
+      <input type="text" id="inputcronname" name="cronname" placeholder="任务名">
+    <div class="controls">
+      {{ form.cron_name }}{{form.cron_name.errors}}
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="cron_rule">时间规则:</label>
+      <input type="text" id="inputcronrule" name="cronrule" placeholder="1 * * * *">
+    <div class="controls">
+      {{ form.cron_rule }}{{form.cron_ruleerrors}}
+    </div>
+  </div>
+    <div class="control-group">
+    <label class="control-label" for="cron_cmd">命令:</label>
+        <input type="text" id="inputcroncmd" name="cron_cmd" placeholder="/bin/bash /home/shell/test.sh">
+    <div class="controls">
+      {{ form.cron_cmd }}{{form.cron_cmd.errors}}
+    </div>
+  </div>
+    <div class="control-group">
+    <label class="control-label" for="cron_service_ip">服务器IP:</label>
+        <input type="text" id="inputcronserviceip" name="cron_service_ip" placeholder="1.1.1.1">
+    <div class="controls">
+       {{ form.cron_service_ip }}{{form.cron_service_ip.errors}}
+    </div>
+  </div>
+    <div class="control-group">
+    <label class="control-label" for="crom_memo">功能备注:</label>
+         <input type="text" id="inputcrommemo" name="crom_memo" placeholder="每分钟执行一次">
+    <div class="controls">
+	  {{ form.crom_memo }}{{form.crom_memo.errors}}
+    </div>
+  </div>
+
+        <div class="control-group">
+    <label class="control-label" for="cron_run_user">运行者:</label>
+         <input type="text" id="inputcron_run_user" name="cron_run_user" placeholder="www">
+    <div class="controls">
+	  {{ form.crom_memo }}{{form.crom_memo.errors}}
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn" >Save Cron</button>
+    </div>
+  </div>
+</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+{#				<button type="button" class="btn btn-primary">#}
+{#					提交更改#}
+{#				</button>#}
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+{% endblock %}

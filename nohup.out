@@ -25,3 +25,74 @@ April 24, 2017 - 09:59:04
 Django version 1.10, using settings 'svnmanager.settings'
 Starting development server at http://0.0.0.0:8080/
 Quit the server with CONTROL-C.
+[24/May/2017 11:37:03] "GET / HTTP/1.1" 200 5641
+[24/May/2017 11:37:04] "GET / HTTP/1.1" 200 5641
+[24/May/2017 11:37:05] "GET /showsvn/ HTTP/1.1" 200 17874
+[24/May/2017 11:37:05] "GET /group/ HTTP/1.1" 200 4168
+[24/May/2017 11:37:05] "GET /onlinecode/ HTTP/1.1" 200 24704
+[24/May/2017 11:39:18] "GET /onlinecode/ HTTP/1.1" 200 24704
+[24/May/2017 11:39:19] "GET / HTTP/1.1" 200 5641
+[24/May/2017 11:39:20] "GET /showsvn/ HTTP/1.1" 200 17874
+[24/May/2017 11:39:20] "GET /group/ HTTP/1.1" 200 4168
+[24/May/2017 11:39:20] "GET /onlinecode/ HTTP/1.1" 200 24704
+[24/May/2017 11:39:21] "GET /assets/ HTTP/1.1" 200 10505
+[24/May/2017 11:41:08] "GET /cron/ HTTP/1.1" 200 3448
+[24/May/2017 11:41:10] "GET / HTTP/1.1" 200 5641
+[24/May/2017 11:41:11] "GET /group/ HTTP/1.1" 200 4168
+[24/May/2017 11:41:13] "GET /showsvn/ HTTP/1.1" 200 17874
+[24/May/2017 11:41:14] "GET /svnlog/ HTTP/1.1" 200 11191
+[24/May/2017 11:41:39] "GET /onlinecode/ HTTP/1.1" 200 24704
+[24/May/2017 11:41:39] "GET /assets/ HTTP/1.1" 200 10505
+[24/May/2017 11:42:30] "GET / HTTP/1.1" 302 0
+[24/May/2017 11:42:30] "GET /login/?next=/ HTTP/1.1" 200 313
+[24/May/2017 11:42:32] "GET /login/?next=/ HTTP/1.1" 200 313
+Performing system checks...
+
+================暂时没用到此处代码，已经在addsvn前端页面添加了===================
+-------------------------------------
+System check identified no issues (0 silenced).
+
+You have 10 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): cronmanager.
+Run 'python manage.py migrate' to apply them.
+May 24, 2017 - 11:36:58
+Django version 1.10, using settings 'svnmanager.settings'
+Starting development server at http://0.0.0.0:8080/
+Quit the server with CONTROL-C.
+request <WSGIRequest: GET '/showsvn/'>
+url: showsvn
+get_perm <QuerySet [<Permission: views_svns_list>]>
+-->i: views_svns_list
+----- app01.views_svns_list
+====》权限已匹配
+request <WSGIRequest: GET '/showsvn/'>
+url: showsvn
+get_perm <QuerySet [<Permission: views_svns_list>]>
+-->i: views_svns_list
+----- app01.views_svns_list
+====》权限已匹配
+request <WSGIRequest: GET '/assets/'>
+url: assets
+get_perm <QuerySet [<Permission: views_assets_info>]>
+-->i: views_assets_info
+----- app01.views_assets_info
+====》权限已匹配
+request <WSGIRequest: GET '/showsvn/'>
+url: showsvn
+get_perm <QuerySet [<Permission: views_svns_list>]>
+-->i: views_svns_list
+----- app01.views_svns_list
+====》权限已匹配
+----------------resp ['2017-05-16-svn.log\n', '2017-05-17-svn.log\n', '2017-05-18-svn.log\n', '2017-05-19-svn.log\n', '2017-05-21-svn.log\n', '2017-05-22-svn.log\n', '2017-05-23-svn.log\n', '2017-05-24-svn.log\n']
+('svnlog--->', '/alidata/pangu/django/svnmanager/svnlog/2017-05-24-svn.log')
+request <WSGIRequest: GET '/assets/'>
+url: assets
+get_perm <QuerySet [<Permission: views_assets_info>]>
+-->i: views_assets_info
+----- app01.views_assets_info
+====》权限已匹配
+----------IP--->>: 124.193.208.10
+---not-found-IP--->>: 124.193.208.10
+----------IP--->>: 124.193.208.10
+---not-found-IP--->>: 124.193.208.10
+Not Found: /http:/www.baidu.com/cache/global/img/gs.gif
+[24/May/2017 11:47:47] "GET http://www.baidu.com/cache/global/img/gs.gif HTTP/1.1" 404 1729

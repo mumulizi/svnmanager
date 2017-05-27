@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}<title>Add Cron</title>{% endblock %}
+{% block content %}
+
+<h3>Add Cron</h3>
+	<hr>
+	<form method="POST" action="" class="form-horizontal"> {% csrf_token %}
+  <div class="control-group">
+    <label class="control-label" for="cron_name">任务名:</label>
+      <input type="text" id="inputcronname" name="cronname" placeholder="任务名">
+    <div class="controls">
+      {{ form.cron_name }}{{form.cron_name.errors}}
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="cron_rule">时间规则:</label>
+      <input type="text" id="inputcronrule" name="cronrule" placeholder="1 * * * *">
+    <div class="controls">
+      {{ form.cron_rule }}{{form.cron_ruleerrors}}
+    </div>
+  </div>
+    <div class="control-group">
+    <label class="control-label" for="cron_cmd">命令:</label>
+        <input type="text" id="inputpass" name="cron_cmd" placeholder="/bin/bash /home/shell/test.sh">
+    <div class="controls">
+      {{ form.cron_cmd }}{{form.cron_cmd.errors}}
+    </div>
+  </div>
+    <div class="control-group">
+    <label class="control-label" for="cron_service_ip">服务器IP:</label>
+        <input type="text" id="inputpath" name="localpath" placeholder="1.1.1.1">
+    <div class="controls">
+       {{ form.cron_service_ip }}{{form.cron_service_ip.errors}}
+    </div>
+  </div>
+    <div class="control-group">
+    <label class="control-label" for="crom_memo">功能备注:</label>
+         <input type="text" id="inputsvnpath" name="crom_memo" placeholder="每分钟执行一次">
+    <div class="controls">
+	  {{ form.crom_memo }}{{form.crom_memo.errors}}
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn" >Save Cron</button>
+    </div>
+  </div>
+</form>
+<span class="label label-success">{{result}}</span>
+{% endblock %}

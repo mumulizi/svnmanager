@@ -5,7 +5,7 @@
 	{#<a href="#"><span class="label label-info"> 添加</span></a>&nbsp;&nbsp;#}
 	{#<a href="#"><span class="label label-inverse">删除</span></a>#}
 <div class="pull-right">
-	<form class="form-search" method="POST">
+	<form class="form-search" method="POST">{% csrf_token %}
 	<input type="text" name ="search" class="input-medium search-query" placeholder="Search">
 	<button type="submit" class="btn">Search</button>&nbsp;&nbsp;
 	</form>

@@ -22,12 +22,13 @@ sys.setdefaultencoding('utf-8')
 
 def login(request):
     #登录功能,允许访问的ip
-    # ip_list=['127.0.0.1','1.1.1.1']
-    # ip = request.META['REMOTE_ADDR']
-    # print"-----------IP--->>:",ip
-    # if ip not in ip_list:
-    #     #return HttpResponse("404 Not Found")
-    #     return render(request,'403.html')
+    ip_list=['127.0.0.1']
+    ip = request.META['REMOTE_ADDR'] 
+    print"----------IP--->>:",ip
+    if ip not in ip_list:
+        print"---not-found-IP--->>:",ip
+        #return HttpResponse("404 Not Found")
+        return render(request,'403.html')
     if request.method == 'POST':
         #根据django自带的用户认证取出数据
 
@@ -468,7 +469,7 @@ def pushonline(request,host_id):
         # print(hostip)
 
         #cmd = "rsync -avz -e ssh --delete %s %s@%s:%s"%(onlinesdir,hostuser,hostip,onlineddir)
-        cmd = "rsync -av -b --exclude-from='%s' --progress  --rsh='ssh -p4591' %s %s@%s:%s"%(onlinexclude,onlinesdir,hostuser,hostip,onlineddir)
+        cmd = "rsync -av -b --backup-dir=/alidata/www/bakup --exclude-from='%s' --progress  --rsh='ssh -p4591' %s %s@%s:%s"%(onlinexclude,onlinesdir,hostuser,hostip,onlineddir)
         print"use rsync user:",request.user.username
         print"cmd:",cmd
 
@@ -492,18 +493,22 @@ def pushonline(request,host_id):
         try:
             #resultxx = verification_ssh(host=sonlinehost,username='root',password=xrootpwd,port=xport,root_pwd=xrootpwd,cmd=cmd)
             resp = os.popen(cmd).read()
+            print"--------------cmd--resp", type(resp)
+            res = resp.split(')')
+            print 'res-----',res
             print"--------------cmd--resp", resp
             resp = str(resp)
 
-            resultxx = resp
+            #resultxx = resp
+            resultxx = res
             if resultxx==u"":
                 resultxx="Error......Update Faile,Please Call admin"
         except:
             resultxx = "Error......请联系管理员"
         # print(cmd)
     print("onlinedhost;",onlinedhost)
-    # return render(request,'pushcode.html',{"result":resultxx})
-    return HttpResponse(resultxx)
+    return render(request,'pushcode.html',{"result":resultxx})
+    #return HttpResponse(resultxx)
 
 
 @login_required(login_url='/login/')
@@ -514,7 +519,19 @@ def assetslist(request):
         search = request.POST.get("search",'null')
         print  request.POST,search
         qset = (
-            Q(name__icontains = search)
+            Q(AssetType__icontains = search)|
+            Q(AssetSn__icontains = search)|
+            Q(ServerName__icontains = search)|
+            Q(IP__icontains = search)|
+            Q(MAC__icontains = search)|
+            Q(ServerType__icontains = search)|
+            Q(ServerSN__icontains = search)|
+            Q(Disk__icontains = search)|
+            Q(RaidInfo__icontains = search)|
+            Q(Mem__icontains = search)|
+            Q(CPU__icontains = search)|
+            Q(iDracIP__icontains = search)|
+            Q(Memo__icontains = search)
             )
         name_list = models.cmdb.objects.filter(qset)
         paginator = Paginator(name_list, 10)
