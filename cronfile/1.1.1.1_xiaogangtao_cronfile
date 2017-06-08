@@ -1,0 +1,2 @@
+#    1 * * * *    /bin/bash /home/shell/test.sh >>/home/test.log 2>&1
+#    1 * * 1 *    /bin/bash /home/shell/test.sh >/home/test.log 2>&1

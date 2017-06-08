@@ -399,7 +399,20 @@ def onlinecode(request):
 
        # print("---rhost_list-->",rhost_list)
         paginator = Paginator(rhost_list, 25)
-        dhost = models.hosts.objects.all()
+#        dhost = models.hosts.objects.all()
+        ghost = models.hostgroup.objects.all()
+        dhost = []
+
+
+        #获取多对多的字段，获取group内host的多对多到hosts表的hostname，select_related加上后就会由<djangoXXXXX>的显示成正常的字段了
+        for group_host in ghost:
+            host_query = group_host.host.select_related()
+            for d_host in host_query:
+                # print(str(d_host)).split(":")[0]
+                host = str(d_host).split(":")[0]
+                dhost.append(host)
+
+
         page = 1
         try:
             host = paginator.page(page)
@@ -412,6 +425,7 @@ def onlinecode(request):
 
 
         rhost_list = models.online.objects.all()
+        host_groups = models.hostgroup.objects.all()
         #print("--rhost_list--",rhost_list)
         #for dhost in rhost_list:
             #print(dhost)
@@ -419,7 +433,18 @@ def onlinecode(request):
          #   dhost_queruset = dhost.dhost.all()
           #  print("===dhost===",dhost_queruset)
         paginator = Paginator(rhost_list, 25)
-        dhost = models.hosts.objects.all()
+        # dhost = models.hosts.objects.all()
+        dhost = []
+
+
+        #获取多对多的字段，获取group内host的多对多到hosts表的hostname，select_related加上后就会由<djangoXXXXX>的显示成正常的字段了
+        for group_host in host_groups:
+            host_query = group_host.host.select_related()
+            for d_host in host_query:
+                # print(str(d_host)).split(":")[0]
+                host = str(d_host).split(":")[0]
+                dhost.append(host)
+            print("dhhost----------------------------->",dhost)
         page = request.GET.get('page')
         try:
             host = paginator.page(page)

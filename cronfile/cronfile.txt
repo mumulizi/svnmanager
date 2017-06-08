@@ -1,0 +1,4 @@
+8 * * * *    /bin/bash /home/shell/haha.sh
+1 * * * *    /bin/bash /home/shell/test2323.sh
+2 * * * *    /bin/bash pwd
+#    11111111    5 */1 * * * /home/shell/php_crontab_Per-hour.sh >>/dev/test.log 2>&1

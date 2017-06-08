@@ -87,6 +87,23 @@
 	    <script src="/static/js/input_control.js"></script>
 <script src="/static/js/jquery.validate.js"></script>
 	<script src="/static/js/aop.js"></script>
+    <script>
+           $("a[name='getlog']").click(function() {
+               var $c_id = $(this).attr('id');
+
+               $.get("/cron/getlog/",
+                       {
+                           cron_id:$c_id
+                       },
+                       function(result){
+                       alert(result);
+                       location.reload();
+               })
+           })
+
+
+
+    </script>
 	<!--<script type="text/javascript">
 	 $(document).ready(function(){
 	  $("#send").click(function(){

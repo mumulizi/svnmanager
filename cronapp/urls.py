@@ -24,4 +24,6 @@ urlpatterns = [
     url(r'^delete/(?P<cron_id>[^/]+)$',views.cron_delete,name='cron_delete'),
     url(r'^stop/(?P<cron_id>[^/]+)$',views.cron_stop,name='cron_stop'),
     url(r'^run/(?P<cron_id>[^/]+)$',views.cron_run,name='cron_run'),
+    url(r'^getlog/(?P<cron_id>[^/]+)$',views.getlog,name='getlog'),
+    url(r'^approval/$',views.approval,name='approval'),
 ]

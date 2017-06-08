@@ -33,4 +33,7 @@ class cron_info(models.Model):
     class Meta:
         verbose_name = '任务管理'
         verbose_name_plural = "任务管理"
-    
+        index_together = ('cron_status','cron_rule','cron_cmd','cron_service_ip')
+        unique_together=[
+            ('cron_status','cron_rule','cron_cmd','cron_service_ip')
+        ]

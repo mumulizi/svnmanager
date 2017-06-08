@@ -8,10 +8,20 @@
     <span style='font-size: 20px; padding: 1% 13%;'>
           <i class='icon-wrench'></i>计划任务管理
     </span>
-    <span style='padding: 1% 30%'><a class="btn btn-primary " data-toggle="modal" data-target="#myModal"  title="Update svn">新增计划任务</a></span>
+    <div style="padding: 1% 30%" class="pull-right">
+{#    <span style=''><a class="btn btn-primary " data-toggle="modal" data-target="#myModal"  title="Add Cron">新增计划任务</a></span>#}
+    <span style=''>保留搜索功能（暂时没写）</span>
+
+    </div>
 </div>
 
 <div style='padding: 1% 13% 0% 10%'>
+        <form action="{% url 'approval' %}" method="POST"> {% csrf_token %}
+        <div style="padding: 1%">
+            <span style=''><a class="btn btn-primary " data-toggle="modal" data-target="#myModal"  title="Add Cron">新增计划任务</a></span>
+
+             <span id="Approval" style=' ' ><button class='btn btn-info'>审核执行</button></span>
+        </div>
       <table class="table table-bordered table-striped table-condensed">
 		<thead>
 			<tr>
@@ -34,11 +44,13 @@
         {% for cron in cron_details  %}
 			<tr>
 {#			<td><a href="{% url app01.views.hostedit host.id %}" title="Edit Server">{{host.host_name}}</a></td>#}
-			<td>{{ cron.id }}</td>
+
+			<td><input type="checkbox" value="{{ cron.id }}" name="check_box_list">{{ cron.id }}</td>
+
 			<td><a data-toggle="modal" data-target="#myModal1" href="#" title="详细信息">{{ cron.cron_name }}</a></td>
 			<td>{{ cron.cron_status }}</td>
 			<td>{{ cron.cron_rule }}</td>
-			<td>{{ cron.cron_cmd }}</td>
+			<td style="width: 300px">{{ cron.cron_cmd }}</td>
 			<td>{{ cron.cron_service_ip }}</td>
 			<td>{{ cron.crom_memo }}</td>
 			<td>{{ cron.cron_run_user }}</td>
@@ -55,13 +67,15 @@
 
             </td>
 			<td>{{ cron.cron_owner }}</td>
-			<td><button class='btn btn-info'>获取日志</button></td>
+{#			<td id="{{ cron.id }}"><a name="getlog"id="{{ cron.id }}" class='btn btn-info'>获取日志</a></td>#}
+			<td ><a href="{% url 'getlog' cron.id %}" class='btn btn-info'>获取日志</a></td>
 {#			<td>{{host.host_user}}</td>#}
 {#			<td>{{host.script_dir}}</td>#}
 			</tr>
         {% endfor %}
 		</tbody>
 	  </table>
+                </form>
 
 </div>
 
