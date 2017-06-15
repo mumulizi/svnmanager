@@ -2,7 +2,7 @@
 #_*_coding:utf-8_*_
 from django.shortcuts import render,HttpResponse
 
-allow_list = ['nibaba','admin']
+allow_list = ['admin','dengmiao','liubo','devbiz']
 
 def cron_allow(request,**kwargs):
     if request.user.username in allow_list:

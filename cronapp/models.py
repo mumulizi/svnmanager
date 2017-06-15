@@ -26,6 +26,7 @@ class cron_info(models.Model):
     #cron_action = models.CharField(u'操作',choices = action_choices,default='stop',max_length=128)
     cron_owner = models.CharField(u'创建人',max_length=150)
     cron_run_user = models.CharField(u'运行者',max_length=20)
+    approval_time = models.CharField(u'审核时间和动作',default="未提交",max_length=150)
     #cron_logfile =
 
     def __str__(self):

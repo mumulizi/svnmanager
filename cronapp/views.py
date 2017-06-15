@@ -23,9 +23,11 @@ def index(request):
             rip = cr_name.cron_service_ip
             rmemo = cr_name.crom_memo
             rown = cr_name.cron_owner
+            rtime = cr_name.approval_time
             print ("%s %s    %s   %s  %s  %s") %(cr_id,rul,rcmd,rip,rmemo,rown)
         return render(request,'crontab/index.html',{'cron_details':cron_details})
     else:
+        global post_cronname
         post_cronname = str(request.POST.get('cronname'))
         post_cronrule = str(request.POST.get('cronrule'))
         post_cron_cmd = str(request.POST.get('cron_cmd'))
@@ -33,7 +35,6 @@ def index(request):
         post_crcrom_memo = request.POST.get('crom_memo')
         post_run_user = str(request.POST.get('cron_run_user'))
         post_user = str(request.user.username)
-
         print("cronmae:%s timerule:%s cron_cmd:%s serviceip:%s  memo:%s run_user:%s user:%s") %(post_cronname,post_cronrule,post_cron_cmd,
                                                                                     post_cron_service_ip,post_crcrom_memo,post_run_user,post_user)
         new_cron = models.cron_info(
@@ -46,19 +47,24 @@ def index(request):
             cron_owner = post_user
         )
         if post_run_user =='www':
-            post_run_user='xiaogangtao'
+            post_run_user='www'
         else:
             post_run_user=str(request.POST.get('cron_run_user'))
         cronfiletxt = post_cron_service_ip+"_"+post_run_user+"_"+"cronfile"
+
+        os.system("sshpass -f /home/a.py scp -P22 root@%s:/var/spool/cron/%s ./cronfile/%s "%(post_cron_service_ip,post_run_user,cronfiletxt))
         add_cron_file = open(('./cronfile/%s')%(cronfiletxt),'a+')
-        # os.system(("scp -P4591 root@%s:/var/spool/%s %s") %(post_run_user,post_run_user,post_cron_service_ip,cronfiletxt))
+        # os.system(("scp -P22 root@%s:/var/spool/%s %s") %(post_run_user,post_run_user,post_cron_service_ip,cronfiletxt))
         add_cron = "#"+"    "+post_cronrule+"    "+post_cron_cmd + "\n"
         if add_cron in add_cron_file.readlines():
             return HttpResponse(u"已存在插入失败")
         else:
             new_cron.save()
-            add_cron_file.write(add_cron)
+            cron_head_id = models.cron_info.objects.get(cron_name = post_cronname).id
+            cron_head_name = "\n"+"#"+ "    "+str(cron_head_id)+post_cronname+"\n"
+            add_cron_file.write(cron_head_name+add_cron)
             add_cron_file.close()
+            os.system("sshpass -f /home/a.py scp -P22 ./cronfile/%s root@%s:/var/spool/cron/%s"%(cronfiletxt,post_cron_service_ip,post_run_user))
             cron_details = models.cron_info.objects.all()
             return render(request,'crontab/index.html',{'cron_details':cron_details})
 
@@ -80,36 +86,43 @@ def cron_delete(request,cron_id):
     get_post_cron_cmd  = str(get_post_cron_name.cron_cmd)
     get_post_cron_ip = get_post_cron_name.cron_service_ip
     if get_post_cron_name.cron_run_user =="www":
-        get_post_cron_run_user = "xiaogangtao"
+        get_post_cron_run_user = "www"
     else:
         get_post_cron_run_user = get_post_cron_name.cron_run_user
     cronfiletxt = get_post_cron_ip+"_"+get_post_cron_run_user+"_"+"cronfile"
     web_cron = "#"+"    "+get_post_cron_rule+"    "+get_post_cron_cmd+"\n"
     web_cron_no_stop = get_post_cron_rule+"    "+get_post_cron_cmd+"\n"
+
+    os.system("sshpass -f /home/a.py scp -P22 root@%s:/var/spool/cron/%s ./cronfile/%s "%(get_post_cron_ip,get_post_cron_run_user,cronfiletxt))
     #删除前端提交的删除数据。获取id，根据id删除
-    cronfile = open(('./cronfile/%s')%(cronfiletxt),'r+')          #一定不要用w+ 切记切记，用之前请百度他俩的区别
+    cronfile = open(('./cronfile/%s')%(cronfiletxt),'a+')          #一定不要用w+ 切记切记，用之前请百度他俩的区别
     cronfile_list = cronfile.readlines()
     models.cron_info.objects.filter(id=cron_id).delete()
     
-    #算反射吧，不想写很多if else，想想就换个写法
+    #算反射吧，尽是if else，想想就换个写法
     status = {"stop":web_cron,
               "running":web_cron_no_stop
               }
     if status.get(get_post_cron_status):
-        ret_cron_index = cronfile_list.index(status.get(get_post_cron_status))
-        print("need-delete-value:",cronfile_list[ret_cron_index])
-        del cronfile_list[ret_cron_index]
-        print("-delet--after--",cronfile_list)
-        cronfile.seek(0)         #指针到开始0的位置
-        cronfile.truncate()      #然后清空该文件 重新把列表写入进去
-        for cron_data in cronfile_list:
-            cronfile.write(cron_data)
-        print(cronfile_list)
+        try:
+            ret_cron_index = cronfile_list.index(status.get(get_post_cron_status))
+            zhushi_cron_index = cronfile_list.index(status.get(get_post_cron_status))-1
+            print("need-delete-value:",cronfile_list[ret_cron_index])
+            del cronfile_list[ret_cron_index]
+            del cronfile_list[zhushi_cron_index]
+            print("-delet--after--",cronfile_list)
+            cronfile.seek(0)         #指针到开始0的位置
+            cronfile.truncate()      #然后清空该文件 重新把列表写入进去
+            for cron_data in cronfile_list:
+                cronfile.write(cron_data)
+            print(cronfile_list)
+        except ValueError:
+            return HttpResponse(u"未检测到源文件存在该计划任务，数据库内已成功删除")
     cronfile.close()
 
     print ("cron_web_user:",request.user.username)
-    # os.system("scp -P4591 %s xiaogangtao@%s:/var/spool/cron/%s"%(cronfiletxt,get_post_cron_ip,get_post_cron_run_user))
-    os.system("sshpass -f /alidata/pangu/django/svnmanager/cronmanager/haha.py scp -P4591 ./cronfile/%s root@%s:/var/spool/cron/%s"%(cronfiletxt,get_post_cron_ip,get_post_cron_run_user))
+    # os.system("scp -P22 %s www@%s:/var/spool/cron/%s"%(cronfiletxt,get_post_cron_ip,get_post_cron_run_user))
+    os.system("sshpass -f /home/a.py scp -P22 ./cronfile/%s root@%s:/var/spool/cron/%s"%(cronfiletxt,get_post_cron_ip,get_post_cron_run_user))
     cron_details = models.cron_info.objects.all()
     return render(request,'crontab/index.html',{'cron_details':cron_details})
 @login_required(login_url='/login/')
@@ -185,6 +198,7 @@ def cron_run(request,cron_id):
 @check_cron_permission
 def approval(request):
     if request.method=="POST":
+        #获取前端的checkbox选中的id
         check_box_list = request.POST.getlist('check_box_list')
         if check_box_list:
             print(check_box_list)
@@ -197,23 +211,25 @@ def approval(request):
                 get_post_cron_rule  = str(get_post_cron_name.cron_rule)
                 get_post_cron_cmd  = str(get_post_cron_name.cron_cmd)
                 get_post_cron_ip = str(get_post_cron_name.cron_service_ip)
+                jing_cron_name = "#"+"    "+cron_id+str(get_post_cron_name)+"\n"
                 if str(get_post_cron_name.cron_run_user) =="www":
-                    get_post_cron_run_user = "xiaogangtao"
+                    get_post_cron_run_user = "www"
                 else:
                     get_post_cron_run_user = str(get_post_cron_name.cron_run_user)
                 cronfiletxt = get_post_cron_ip+"_"+get_post_cron_run_user+"_"+"cronfile"
                 no_jing_ret = get_post_cron_rule + "    "+get_post_cron_cmd+"\n"
                 ret = "#" + "    " +get_post_cron_rule + "    "+get_post_cron_cmd+"\n"
+                os.system("sshpass -f /home/a.py scp -P22 root@%s:/var/spool/cron/%s ./cronfile/%s "%(get_post_cron_ip,get_post_cron_run_user,cronfiletxt))
+                cronfile = open(('./cronfile/%s')%(cronfiletxt),'a+')          #不要用w+ 切记切记，用之前请百度他俩的区别
 
-                cronfile = open(('./cronfile/%s')%(cronfiletxt),'r+')          #不要用w+ 切记切记，用之前请百度他俩的区别
                 cronfile_list = cronfile.readlines()
 
 
                 #如果前端提交的stop成立并且在计划任务里的该计划没有注释，那么就操作该if
-                if get_post_cron_status =="stop" and no_jing_ret in cronfile_list:
+                if get_post_cron_status =="stop" and jing_cron_name in cronfile_list and no_jing_ret in cronfile_list:
                     print(cronfile_list)     #此print为了在log日志打印出来备份使用。万一计划任务清空，可根据该print找回
                     print("change:",ret)
-                    cron_index = cronfile_list.index(no_jing_ret)
+                    cron_index = cronfile_list.index(jing_cron_name)+1
                     del cronfile_list[cron_index]
                     cronfile_list.insert(cron_index,ret)
                     cronfile.seek(0)         #指针到开始0的位置
@@ -221,10 +237,10 @@ def approval(request):
                     for cron_data in cronfile_list:
                         cronfile.write(cron_data)
 
-                elif get_post_cron_status =="running"  and ret in cronfile_list:
+                elif get_post_cron_status =="running" and jing_cron_name in cronfile_list and ret in cronfile_list:
                     print(cronfile_list)
                     print("change:",no_jing_ret)
-                    cron_index = cronfile_list.index(ret)
+                    cron_index = cronfile_list.index(jing_cron_name)+1
                     del cronfile_list[cron_index]
                     cronfile_list.insert(cron_index,no_jing_ret)
                     cronfile.seek(0)         #指针到开始0的位置
@@ -246,16 +262,41 @@ def approval(request):
                     cronfile.truncate()      #然后清空该文件 重新把列表写入进去
                     for cron_data in cronfile_list:
                         cronfile.write(cron_data)
+                else:
+                    if get_post_cron_status =="stop"  and no_jing_ret in cronfile_list:
+                        print(cronfile_list)     #此print为了在log日志打印出来备份使用。万一计划任务清空，可根据该print找回
+                        print("change:",ret)
+                        cron_index = cronfile_list.index(no_jing_ret)
+                        del cronfile_list[cron_index]
+                        cronfile_list.insert(cron_index,ret)
+                        cronfile.seek(0)         #指针到开始0的位置
+                        cronfile.truncate()      #然后清空该文件 重新把列表写入进去
+                        for cron_data in cronfile_list:
+                            cronfile.write(cron_data)
 
+                    elif get_post_cron_status =="running"  and ret in cronfile_list:
+                        print(cronfile_list)
+                        print("change:",no_jing_ret)
+                        cron_index = cronfile_list.index(ret)
+                        del cronfile_list[cron_index]
+                        cronfile_list.insert(cron_index,no_jing_ret)
+                        cronfile.seek(0)         #指针到开始0的位置
+                        cronfile.truncate()      #然后清空该文件 重新把列表写入进去
+                        for cron_data in cronfile_list:
+                            cronfile.write(cron_data)
                 cronfile.close()
                 try:
-                    #运行者只能使用xiaogangtao用户 和root用户 www用户好像没有key打通，而且xiaogangtao映射的www  /var/spool 下的名字也是xiaogangtao 和root
-                    #可能会遇到权限问题，因为使用的是xiaogangtao用户运行的此系统，www目录的需要，可能就会对root计划任务无法操作  猜想的还没实验
+                    #运行者只能使用www用户 和root用户 www用户好像没有key打通，而且www映射的www  /var/spool 下的名字也是www 和root
+                    #可能会遇到权限问题，因为使用的是www用户运行的此系统，www目录的需要，可能就会对root计划任务无法操作  猜想的还没实验
                     new_file_name = get_post_cron_ip+"_"+get_post_cron_run_user+time.strftime("%Y%m%d%H%M%S", time.localtime()) 
-                    src_ret = os.system(("sshpass -f /alidata/pangu/django/svnmanager/cronmanager/haha.py scp -P4591 root@%s:/var/spool/cron/%s /home/cronbak/%s")%(get_post_cron_ip,get_post_cron_run_user,new_file_name))
+                    src_ret = os.system(("sshpass -f /home/a.py scp -P22 root@%s:/var/spool/cron/%s /home/cronbak/%s")%(get_post_cron_ip,get_post_cron_run_user,new_file_name))
                     if src_ret==0:
-                        os.system(("sshpass -f /alidata/pangu/django/svnmanager/cronmanager/haha.py scp -P4591 ./cronfile/%s root@%s:/var/spool/cron/%s")%(cronfiletxt,get_post_cron_ip,get_post_cron_run_user))
+                        os.system(("sshpass -f /home/a.py scp -P22 ./cronfile/%s root@%s:/var/spool/cron/%s")%(cronfiletxt,get_post_cron_ip,get_post_cron_run_user))
                         cron_result.append(u"执行成功"+get_post_cron_rule + get_post_cron_ip)
+
+                        approval_t = request.user.username+"    "+time.strftime("%Y    %m%d%H%M", time.localtime())+"    "+get_post_cron_status
+                        models.cron_info.objects.filter(id=cron_id).update(approval_time =approval_t )
+
                     else:
                         print(u"源文件备份失败，以下不做操作")
                         cron_result.append(u"%s %s %s源文件备份失败，以下将不会做任何操作"%(get_post_cron_ip,get_post_cron_rule,get_post_cron_cmd))
@@ -281,18 +322,19 @@ def getlog(request,cron_id):
         logfile = get_post_cron_cmd.split(">>")[1].split()[0]
         #print(get_post_cron_cmd)
         print(logfile)
-        copy_ret = os.system(("sshpass -f /alidata/pangu/django/svnmanager/cronmanager/haha.py scp -P4591 root@%s:%s  ./cronlog/%s ")%(get_post_cron_ip,logfile,cron_id))
+        copy_ret = os.system(("sshpass -f /home/a.py scp -P22 root@%s:%s  ./cronlog/%s ")%(get_post_cron_ip,logfile,cron_id))
         if logfile == "/dev/null":
             return HttpResponse(u"/dev/null 是不可读取的日志，该计划任务未产生日志")
         else:
-            copy_ret = os.system(("sshpass -f /alidata/pangu/django/svnmanager/cronmanager/haha.py scp -P4591 root@%s:%s  ./cronlog/%s ")%(get_post_cron_ip,logfile,cron_id))
+            copy_ret = os.system(("sshpass -f /home/a.py scp -P22 root@%s:%s  ./cronlog/%s ")%(get_post_cron_ip,logfile,cron_id))
             if copy_ret ==0:
                 local_cronlog =open(("./cronlog/%s")%(cron_id),"r")
-                local_log_file_read =local_cronlog.read()
+                local_log_file_read =local_cronlog.readlines()
                 if local_log_file_read =='':
                     return HttpResponse(u"读取成功，但该计划任务未产生日志")
                 else:
-                    return HttpResponse(local_log_file_read)
+                    return render(request,'./crontab/cronlog.html',{'local_log_file_read':local_log_file_read})
+                    # return HttpResponse(local_log_file_read)
             else:
                 return HttpResponse(u"读取日志失败，联系管理员>")
     except IndexError:
@@ -302,7 +344,7 @@ def getlog(request,cron_id):
             if logfile == "/dev/null":
                 return HttpResponse(u"/dev/null 是不可读取的日志，该计划任务未产生日志")
             else:
-                copy_ret = os.system(("sshpass -f /alidata/pangu/django/svnmanager/cronmanager/haha.py scp -P4591 root@%s:%s  ./cronlog/%s ")%(get_post_cron_ip,logfile,cron_id))
+                copy_ret = os.system(("sshpass -f /home/a.py scp -P22 root@%s:%s  ./cronlog/%s ")%(get_post_cron_ip,logfile,cron_id))
                 if copy_ret ==0:
                     local_log_file_read = open(("./cronlog/%s")%(cron_id),"r").read()
                     if local_log_file_read =='':
