@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}<title>Cron log</title>{% endblock %}
+{% block fewbody %}
+
+
+
+	<hr>
+    
+        <div class="well">
+        {% for i in local_log_file_read %}
+            <p class="text-info" style="font-size: 19px">
+
+        {% autoescape off %}{{i}}{% endautoescape %}</p>
+        {% endfor %}
+        </div>
+{% endblock %}

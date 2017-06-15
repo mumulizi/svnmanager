@@ -35,6 +35,7 @@
 			<th>运行者</th>
 			<th>操作</th>
 			<th>创建人</th>
+			<th>审核时间</th>
 			<th>logfile</th>
 {#			<th>Host User</th>#}
 {#			<th>Script Dir</th>#}
@@ -67,6 +68,7 @@
 
             </td>
 			<td>{{ cron.cron_owner }}</td>
+			<td >{{ cron.approval_time }}</td>
 {#			<td id="{{ cron.id }}"><a name="getlog"id="{{ cron.id }}" class='btn btn-info'>获取日志</a></td>#}
 			<td ><a href="{% url 'getlog' cron.id %}" class='btn btn-info'>获取日志</a></td>
 {#			<td>{{host.host_user}}</td>#}
