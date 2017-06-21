@@ -1,0 +1,34 @@
+昨天调ansibleAPI没弄好
+总是莫名其妙的各种错
+
+今天重新卸载了ansible 然后API调用就可以了。很神奇
+
+以前的系统环境升级了py 从2.6 升级到了2.7
+昨天不知道什么问题。
+现在大致改的东西如下
+yum -y install ansible   yum他自己装了一个2.多的
+[root@jxq-c2-16-10 svnmanager]# ansible --version
+/usr/lib64/python2.6/site-packages/cryptography/__init__.py:26: DeprecationWarning: Python 2.6 is no longer supported by the Python core team, please upgrade your Python. A future version of cryptography will drop support for Python 2.6
+  DeprecationWarning
+ansible 2.3.1.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = Default w/o overrides
+  python version = 2.6.6 (r266:84292, Aug 18 2016, 15:13:37) [GCC 4.4.7 20120313 (Red Hat 4.4.7-17)]
+
+
+
+然后用py2.7的pip安装了1.9.6的ansible   
+./pip2.7 install ansible==1.9.6
+
+因为以前升级了py 改了一个配置文件 不知道有没有关系，开头改成了这样
+[root@jxq-c2-16-10 core]# cat  /usr/bin/ansible
+#!/usr/bin/python_old
+
+
+
+
+
+API 使用参见资产管理系统
+
+
+
