@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% block title %}<title>cmdbedit</title>{% endblock %}
+{% block fewbody %}
+{% block header_content %}
+{% block footer%}
+
+            <!-- Bootstrap core CSS -->
+    <link href="/static/template/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Font Awesome -->
+        <link href="/static/template/css/font-awesome.min.css" rel="stylesheet">
+            
+        <!-- Pace -->
+        <link href="/static/template/css/pace.css" rel="stylesheet">
+           
+        <!-- Endless -->
+        <link href="/static/template/css/endless.min.css" rel="stylesheet">
+        <link href="/static/template/css/endless-skin.css" rel="stylesheet">
+
+        <!-- Datatable -->
+        <link href="/static/plugins/datatables/css/jquery.dataTables_themeroller.css" rel="stylesheet">
+
+
+
+        <!-- Jquery -->
+        <script src="/static/template/js/jquery-1.10.2.min.js"></script>
+
+        <!-- Bootstrap -->
+    <script src="/static/template/bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- Modernizr -->
+        <script src='/static/template/js/modernizr.min.js'></script>
+
+    <!-- Pace -->
+        <script src='/static/template/js/pace.min.js'></script>
+
+        <!-- Popup Overlay -->
+        <script src='/static/template/js/jquery.popupoverlay.min.js'></script>
+
+    <!-- Slimscroll -->
+        <script src='/static/template/js/jquery.slimscroll.min.js'></script>
+
+        <!-- Cookie -->
+        <script src='/static/template/js/jquery.cookie.min.js'></script>
+
+        <!-- Endless -->
+        <script src="/static/template/js/endless/endless.js"></script>
+
+        <!-- 加载csrf.js，实现ajax post方式提交数据时可以跨过django的跨站请求伪造保护 -->
+        <script src="/static/js/csrf.js"></script>
+
+        <script src="/static/plugins/layer/layer.js"></script> {# 加载layer控件，实现弹出框 #}
+
+        <!-- Datatable -->
+        <script src='/static/plugins/datatables/js/jquery.dataTables.min.js'></script>
+
+
+
+
+<style>
+.center {
+ width: auto;
+ display: table;
+ margin-left: auto;
+ margin-right: auto;
+}
+.text-center {
+ text-align: center;
+}
+</style>
+<!-- Datatable -->
+<link href="/static/plugins/datatables/css/jquery.dataTables_themeroller.css" rel="stylesheet">
+{% endblock %}
+
+
+
+{% block container %}
+<div id="main-container">
+	<div class="padding-md">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="no-margin" id="formValidate1" data-validate="parsley" novalidate="">
+						<div class="panel-heading">
+							编辑服务器信息
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label">项目名称</label>
+										<input type="text" class="form-control input-sm parsley-validated" id="project_name">
+									</div><!-- /form-group -->
+								</div><!-- /.col -->
+							</div><!-- /.row -->
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label">内网IP</label>
+										<input type="text" class="form-control input-sm parsley-validated" id="in_ip">
+									</div><!-- /form-group -->
+								</div><!-- /.col -->
+							</div><!-- /.row -->
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label">外网IP</label>
+										<input type="text" class="form-control input-sm parsley-validated" id="ex_ip">
+									</div><!-- /form-group -->
+								</div><!-- /.col -->
+							</div><!-- /.row -->
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label">位置</label>
+										<!--<input type="text" class="form-control input-sm parsley-validated" id="status" data-required="true">-->
+										<select id="position" class="form-control parsley-validated" data-required="true">
+											<option value="">请选择</option>
+											<option value="腾讯云">腾讯云</option>
+											<option value="阿里云">阿里云</option>
+											<option value="IDC">IDC机房</option>
+										</select>
+									</div><!-- /form-group -->
+								</div><!-- /.col -->
+							</div><!-- /.row -->
+						</div>
+						<div class="panel-footer text-right">
+							<button id="save" type="button" class="btn btn-success">保存</button>
+						</div>
+					</div>
+				</div><!-- /panel -->
+			</div><!-- /.col-->
+		</div>
+	</div>
+</div><!-- /main-container -->
+{% endblock %}
+
+
+{% block footer_content %}
+<script src="/static/plugins/layer/layer.js"></script> {# 加载layer控件，实现弹出框 #}
+<!-- Parsley表单验证 -->
+<script src="/static/template/js/parsley.min.js"></script>
+<script>
+/*
+ *设置初始值
+ */
+$('#project_name').val("{{server.project_name}}"); //项目名称
+$('#in_ip').val("{{server.in_ip}}"); //内网 IP
+$('#ex_ip').val("{{server.ex_ip}}"); //外网 IP
+$('#position').val("{{server.position}}"); //位置
+
+/*
+*保存数据
+*/
+$('#save').click(function(){
+    var project_name = $("#project_name").val();//
+    var in_ip = $("#in_ip").val();
+    var ex_ip = $("#ex_ip").val();
+    var position = $("#position").val();
+    var cur_url = window.location.href;//当前url
+    var id = cur_url.split('/')[5];//当前url的id
+    var data = {"project_name":project_name,"in_ip":in_ip,"ex_ip":ex_ip,"position":position,"id":id};
+    data = JSON.stringify(data);
+    var url = "/cmdb/server_edit/";
+
+    $.get(url,{data:data},function(msg){
+    	ajax_callback(msg);
+     });
+});
+
+
+/*
+*ajax get callback
+*/
+function ajax_callback(msg){
+    var msg =  $.parseJSON(msg);
+    var index = layer.alert(msg, {
+        skin: 'layui-layer-molv' //样式类名
+    },function(){
+       layer.close(index)
+    });
+}
+</script>
+{% endblock %}
+{% endblock %}
+{% endblock %}

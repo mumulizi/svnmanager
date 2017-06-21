@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from controller.public.pagination import *
-from controller.core.ansiblehelp import *
+from controller.core.API import *
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
@@ -62,17 +62,12 @@ def index(request):
         app.append(obj)
 
     paginator.current_page.object_list = app
-    return render(request,'cmdb/index.html',locals())
-    #return HttpResponse("ok")
-
-
+    return render_to_response('cmdb/index.html', locals(), context_instance=RequestContext(request))
 
 
 def server_add_page(request):
     # 新增机器页面
-    return render(request,'cmdb/server_add.html', locals())
-
-
+    return render_to_response('cmdb/server_add.html', locals(), context_instance=RequestContext(request))
 
 
 def server_add(request):
@@ -91,11 +86,10 @@ def server_add(request):
     return response
 
 
-
 def server_edit_page(request, id):
     # 编辑机器页面
     server = Server.objects.get(pk=id)
-    return render(request,'cmdb/server_edit.html', locals())
+    return render_to_response('cmdb/server_edit.html', locals(), context_instance=RequestContext(request))
 
 
 def server_edit(request):
@@ -123,6 +117,15 @@ def server_edit(request):
     return response
 
 
+def server_delete(request):
+    # 删除机器信息
+    response = HttpResponse()
+    data = json.loads(request.POST.get('data', ''))
+    id = int(data['id'])
+    Server.objects.get(pk=id).delete()
+
+    response.write(json.dumps(u'成功'))
+    return response
 
 
 @login_required
@@ -150,4 +153,49 @@ def postmachineinfo(request):
     # set_service_port(server)  # 设置服务端口信息
     response.write(json.dumps(u'成功'))
     return response
+
+
+def set_service_port(server):
+    # 设置服务端口信息
+    services = Service.objects.filter(server=server)
+    result = get_service_port(server.in_ip)
+
+    new_srv_name = result.keys()  # 客户端抓取的数据
+    old_srv_name = [obj.service_name for obj in services]  # 数据库查询的数据
+
+    add_services = list(set(new_srv_name) - set(old_srv_name))  # 新增的服务
+    delete_services = list(set(old_srv_name) - set(new_srv_name))  # 删除的服务
+    update_services = list(set(new_srv_name) & set(old_srv_name))  # 更新的服务
+
+    add_data = {}  # 新增服务和端口号
+    update_data = {}  # 更新的服务和端口号
+    for value in result:
+        if value in add_services:
+            add_data[value] = result[value]
+        if value in update_services:
+            update_data[value] = result[value]
+
+    # 新增服务
+    for ad in add_data:
+        values = add_data[ad]
+        for val in values:
+            Service.objects.create(server=server, service_name=ad, port=val)
+
+    # 删除服务
+    for delt in delete_services:
+        Service.objects.filter(server=server, service_name=delt).delete()
+
+    # 更新服务
+    for update in update_data:
+        new = update_data[update]  # 需要更新的服务的端口
+        services = Service.objects.filter(server=server, service_name=update)
+        old = [srv.port for srv in services]  # 旧的服务的端口
+
+        adds = list(set(new) - set(old))  # 增加的端口
+        deletes = list(set(old) - set(new))  # 删除的端口
+
+        for add in adds:
+            Service.objects.create(server=server, service_name=update, port=add)
+        for delete in deletes:
+            Service.objects.filter(server=server, service_name=update, port=delete).delete()
 

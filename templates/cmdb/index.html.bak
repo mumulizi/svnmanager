@@ -1,0 +1,386 @@
+{% extends "base.html" %}
+{% block title %}<title>crontab</title>{% endblock %}
+{% block fewbody %}
+{% block header_content %}
+{% block footer%}
+	    <!-- Bootstrap core CSS -->
+    <link href="/static/template/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Font Awesome -->
+	<link href="/static/template/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Pace -->
+	<link href="/static/template/css/pace.css" rel="stylesheet">	
+	
+	<!-- Endless -->
+	<link href="/static/template/css/endless.min.css" rel="stylesheet">
+	<link href="/static/template/css/endless-skin.css" rel="stylesheet">
+
+	<!-- Datatable -->
+	<link href="/static/plugins/datatables/css/jquery.dataTables_themeroller.css" rel="stylesheet">
+
+
+
+        <!-- Jquery -->
+	<script src="/static/template/js/jquery-1.10.2.min.js"></script>
+
+	<!-- Bootstrap -->
+    <script src="/static/template/bootstrap/js/bootstrap.min.js"></script>
+   
+	<!-- Modernizr -->
+	<script src='/static/template/js/modernizr.min.js'></script>
+   
+    <!-- Pace -->
+	<script src='/static/template/js/pace.min.js'></script>
+	
+	<!-- Popup Overlay -->
+	<script src='/static/template/js/jquery.popupoverlay.min.js'></script>
+   
+    <!-- Slimscroll -->
+	<script src='/static/template/js/jquery.slimscroll.min.js'></script>
+    
+	<!-- Cookie -->
+	<script src='/static/template/js/jquery.cookie.min.js'></script>
+
+	<!-- Endless -->
+	<script src="/static/template/js/endless/endless.js"></script>
+
+	<!-- 加载csrf.js，实现ajax post方式提交数据时可以跨过django的跨站请求伪造保护 -->
+	<script src="/static/js/csrf.js"></script>
+
+	<script src="/static/plugins/layer/layer.js"></script> {# 加载layer控件，实现弹出框 #}
+
+	<!-- Datatable -->
+	<script src='/static/plugins/datatables/js/jquery.dataTables.min.js'></script>
+
+
+
+<style>
+.center {
+ width: auto;
+ display: table;
+ margin-left: auto;
+ margin-right: auto;
+}
+.text-center {
+ text-align: center;
+}
+</style>
+{% endblock %}
+
+
+{% block container %}
+<div id="main-container">
+	<div class="main-header clearfix">
+		<div class="page-title">
+			<h3 class="no-margin">服务器列表</h3>
+			<span>machine list</span>
+		</div><!-- /page-title -->
+
+		<ul class="page-stats">
+			<li>
+				<div class="value">
+					<span>在线机器</span>
+					<h4 id="currentVisitor">123</h4>
+				</div>
+				<span id="visits" class="sparkline"></span>
+			</li>
+{#			<li>#}
+{#				<div class="value">#}
+{#					<span>My balance</span>#}
+{#					<h4>$<strong id="currentBalance">32153</strong></h4>#}
+{#				</div>#}
+{#				<span id="balances" class="sparkline"></span>#}
+{#			</li>#}
+		</ul><!-- /page-stats -->
+	</div><!-- /main-header -->
+
+
+	<div class="padding-md">
+		<div class="panel panel-default table-responsive">
+			<!--<div class="panel-heading">-->
+				<!--Data Table-->
+				<!--<span class="label label-info pull-right">790 Items</span>-->
+			<!--</div>-->
+			<form action="/cmdb/server_list/" class="panel-body">
+				<div class="form-inline" style="margin-bottom: 12px">
+					<div class="form-group">
+						<label>服务</label>
+						<input type="text" id="service" name="service" class="form-control input-sm">
+					</div><!-- /form-group -->
+					<div class="form-group">
+						<label>主机名</label>
+						<input type="text" id="host_name" name="host_name" class="form-control input-sm">
+					</div><!-- /form-group -->
+					<div class="form-group">
+						<label>IP</label>
+						<input type="text" id="in_ip" name="in_ip" class="form-control input-sm">
+					</div><!-- /form-group -->
+				</div>
+				<div class="form-inline" style="margin-bottom: 12px">
+					<div class="form-group">
+						<label>位置</label>
+						<input type="text" id="position" name="position" class="form-control input-sm">
+					</div><!-- /form-group -->
+					<div class="form-group">
+						<label>项目名称</label>
+						<input type="text" id="project_name" name="project_name" class="form-control input-sm">
+					</div><!-- /form-group -->
+					<div class="form-group">
+						<label>运行状态</label>
+						<select id="status" name="status" class="form-control">
+							<option value="">请选择</option>
+							<option value="UP">UP</option>
+							<option value="DOWN">DOWN</option>
+						</select>
+					</div><!-- /form-group -->
+				</div>
+				<div class="form-inline">
+					<button type="submit" class="btn btn-sm btn-success">搜索</button>
+					<a type="button" href="/cmdb/server_add_page/" target="_black" class="btn btn-sm btn-info">新增</a>
+                </div>
+			</form>
+
+				<div class="padding-md clearfix">
+				<table class="table table-striped" id="dataTable">
+					<thead>
+						<tr>
+							<th>序号</th>
+                            <th>IP</th>
+                            <th>主机名</th>
+                            <th>项目名称</th>
+                            <th>位置</th>
+							<th>服务</th>
+							<th>运行状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for server in paginator.current_page.object_list%}
+						<tr>
+							<td>{{forloop.counter0|add:paginator.current_page.start_index}}</td>
+							<td>{{server.in_ip}}</td>
+                            <td>
+                                <a name="host_name" class="text-info" href="#">{{server.host_name}}</a>
+                                <input type="hidden" value="{{server.os_version}}&
+                                                            {{server.os_kernel}}&{{server.cpu_model}}&
+                                                            {{server.cpu_count}}&{{server.cpu_cores}}&
+                                                            {{server.mem}}&{{server.disk}}&
+                                                            {{server.max_open_files}}&
+                                                            {{server.uptime}}&
+                                                            {{server.ex_ip}}">
+                            </td>
+                            <td>{{server.project_name}}</td>
+                            <td>{{server.position}}</td>
+							<td>
+                                <p name="service_tips" style="width:50px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;cursor:pointer;" >
+                                    {%for svc in server.services%}{{svc.service_name}} {{svc.port}}-{%endfor%}
+                                </p>
+                            </td>
+							<td>
+                                {%if server.status%}
+                                    <span><img src="/static/img/Up.gif">UP</span>
+                                {%else%}
+                                    <span style=""><img src="/static/img/Down.gif">DOWN</span>
+                                {%endif%}
+                            </td>
+							<td>
+								<a class="btn btn-xs btn-success" target="_blank" href="/cmdb/server_edit_page/{{server.id}}">
+									<i class="fa fa-edit fa-lg"></i>
+								</a>
+								<button class="btn btn-xs btn-danger" id="server_delete_{{server.id}}">
+									<i class="fa fa-times fa-lg"></i>
+								</button>
+                                <button type="button" id="server_update_{{server.id}}" class="btn btn-xs btn-primary">更新</button>
+							</td>
+						</tr>
+						{%endfor%}
+					</tbody>
+				</table>
+				<div class="panel-footer clearfix">
+					<ul class="pagination pagination-sm center">
+					{% if paginator.current_page.has_previous %}
+						<li><a href="?{{paginator.qstr}}&p=1">First</a></li>
+						<li><a href="?{{paginator.qstr}}&p={{paginator.current_page.previous_page_number}}">Previos</a></li>
+					{% else %}
+						<li class="disabled"><a href="?{{paginator.qstr}}&p=1">First</a></li>
+						<li class="disabled"><a>Previous</a></li>
+					{% endif %}
+
+					{% for num in paginator.page_range %}
+						{% if num == paginator.current_page.number %}
+							<li class="active"><a>{{num}}</a></li>
+						{% else %}
+							<li><a href="?{{paginator.qstr}}&p={{num}}">{{num}}</a></li>
+						{% endif %}
+					{% endfor %}
+
+					{% if paginator.current_page.has_next %}
+						<li><a href="?{{paginator.qstr}}&p={{paginator.current_page.next_page_number}}">Next</a></li>
+						<li><a href="?{{paginator.qstr}}&p={{paginator.pages.num_pages}}">Last</a></li>
+					{% else %}
+						<li class="disabled"><a href="?{{paginator.qstr}}&p={{paginator.pages.num_pages}}">Last</a></li>
+						<li class="disabled"><a>Next</a></li>
+					{% endif %}
+					</ul>
+				</div>
+			</div><!-- /.padding-md -->
+
+		</div><!-- /panel -->
+	</div><!-- /padding-md -->
+</div><!-- /main-container -->
+{% endblock %}
+
+{% block footer_content %}
+
+
+<!--<script src='/static/template/js/jquery.dataTables.min.js'></script>-->
+<script>
+/*
+*设置搜索初始值
+*/
+$('#emp_num').val("{{data.emp_num}}"); //服务
+$('#host_name').val("{{host_name}}"); //主机名
+$('#in_ip').val("{{in_ip}}"); //内网IP
+$('#position').val("{{position}}"); //位置
+$('#project_name').val("{{project_name}}"); //项目名称
+$('#status').val("{{status}}"); //运行状态
+
+
+/*
+*初始化表格
+*/
+	$(function	()	{
+		$('#dataTable').dataTable( {
+    	paging: false,
+//    "ordering": false,
+    "info":     false,
+//			"lengthChange": false,
+			"bJQueryUI": true,
+//			"sPaginationType": "full_numbers",
+			"searching": false
+
+		});
+	});
+
+
+/*
+*删除机器信息
+*/
+$("table tbody tr td button[id^='server_delete']").click(function(){
+	var id_val = $(this).attr('id');
+	var id = id_val.split('_')[2];
+    var data = {"id":id};
+    data = JSON.stringify(data);
+    var url = "/cmdb/server_delete/";
+
+	var index = layer.confirm('确定删除吗？', {
+	  btn: ['确定','取消'] //按钮
+	}, function(){
+		$.post(url,{data:data},function(msg){
+			ajax_callback(msg);
+		 });
+	}, function(){
+	  layer.close(index)
+	});
+});
+
+
+/*
+*主机基本信息提示
+*/
+ $("table tbody tr td a[name='host_name']").each(function(){
+	var content = $(this).next().val().split('&');//获取隐藏的主机基本信息内容
+     console.log($(this))
+ 	var arr = new Array();
+	arr.push("<div><span>系统版本</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ content[0] +"</span></div>")
+	arr.push("<div><span>系统内核</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ content[1] +"</span></div>")
+	 arr.push("<div><span>CPU型号</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ content[2] +"</span></div>")
+	 arr.push("<div><span>CPU个数</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ content[3] +"</span></div>")
+	 arr.push("<div><span>CPU核数</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ content[4] +"</span></div>")
+	 arr.push("<div><span>内存</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ content[5] +" M</span></div>")
+	arr.push("<div><span>硬盘</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ content[6] +"</span></div>")
+	arr.push("<div><span>最大文件打开数</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ content[7] +"</span></div>")
+	arr.push("<div><span>运行时间</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ content[8] +" 天</span></div>")
+	arr.push("<div><span>外网IP</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ content[9] +"</span></div>")
+	new_cont = arr.join('');
+	tips($(this),new_cont,'auto','auto',1);
+});
+
+
+/*
+*主机服务、端口信息提示
+*/
+ $("table tbody tr td p[name='service_tips']").each(function(){
+	var content = $(this).text().split('-');//获取服务列的内容
+	var arr = new Array();
+	$.each(content,function(k, v){
+		values = v.split(' ')
+		arr.push("<div><span>"+ values[0] +"</span>&nbsp&nbsp&nbsp&nbsp"+"<span style='float:right'>"+ values[1] +"</span></div>")
+	})
+	arr.pop()//删除最后一个元素
+	new_cont = arr.join('');
+	tips($(this),new_cont,'auto','auto',1);
+});
+
+
+
+
+
+/*
+*小tips,鼠标悬停提示
+*/
+function tips(element,content,width,height,direction,colour){
+	height = height || 'auto';
+	width = width || 'auto';
+	direction = direction || 1;//提示层默认在上方出现
+	colour = colour || '#3595CC';
+	element.hover(
+	        function tips(){
+	            index = layer.tips(content, element, {
+	                tips: [direction, colour],
+	                time: 100000000000,
+	                area: [width,height]
+	                });
+	        },
+	        function (){
+	            layer.closeAll('tips');
+	        }
+	    );
+}
+
+/*
+*更新机器信息
+*/
+$("table tbody tr td button[id^='server_update']").click(function(){
+	var id_val = $(this).attr('id'); //获取更新按钮id值
+	var id = id_val.split('_')[2]; //获取id值的最后一位
+    var data = {"id":id};
+    data = JSON.stringify(data);
+    var url = "/cmdb/postmachineinfo/";
+
+    $.get(url,{data:data},function(msg){
+    	ajax_callback(msg);
+     });
+});
+
+/*
+*ajax get callback
+*/
+function ajax_callback(msg){
+    var msg =  $.parseJSON(msg);
+    var index = layer.alert(msg, { //layer控件提示信息
+        skin: 'layui-layer-molv' //样式类名
+    },function(){
+        if (msg == '成功'){
+            window.location="/cmdb/server_list/";
+        }
+        else{
+           layer.close(index)
+        }
+    });
+}
+</script>
+{% endblock %}
+{% endblock %}
+{% endblock %}

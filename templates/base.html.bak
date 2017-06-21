@@ -8,6 +8,22 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
+      <!-- Bootstrap core CSS -->
+    <link href="/static/template/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Font Awesome -->
+	<link href="/static/template/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Pace -->
+	<link href="/static/template/css/pace.css" rel="stylesheet">
+
+	<!-- Endless -->
+	<link href="/static/template/css/endless.min.css" rel="stylesheet">
+	<link href="/static/template/css/endless-skin.css" rel="stylesheet">
+
+	<!-- Datatable -->
+	<link href="/static/plugins/datatables/css/jquery.dataTables_themeroller.css" rel="stylesheet">
+
     <link href="/static/css/bootstrap.css" rel="stylesheet">
     <style>
       body {
@@ -83,10 +99,41 @@
 
     <footer>
     </footer>
-    {% block footer %} {% endblock %}
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Jquery -->
+	<script src="/static/template/js/jquery-1.10.2.min.js"></script>
+
+	<!-- Bootstrap -->
+    <script src="/static/template/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Modernizr -->
+	<script src='/static/template/js/modernizr.min.js'></script>
+
+    <!-- Pace -->
+	<script src='/static/template/js/pace.min.js'></script>
+
+	<!-- Popup Overlay -->
+	<script src='/static/template/js/jquery.popupoverlay.min.js'></script>
+
+    <!-- Slimscroll -->
+	<script src='/static/template/js/jquery.slimscroll.min.js'></script>
+
+	<!-- Cookie -->
+	<script src='/static/template/js/jquery.cookie.min.js'></script>
+
+	<!-- Endless -->
+	<script src="/static/template/js/endless/endless.js"></script>
+
+	<!-- 加载csrf.js，实现ajax post方式提交数据时可以跨过django的跨站请求伪造保护 -->
+	<script src="/static/js/csrf.js"></script>
+
+	<script src="/static/plugins/layer/layer.js"></script> {# 加载layer控件，实现弹出框 #}
+
+	<!-- Datatable -->
+	<script src='/static/plugins/datatables/js/jquery.dataTables.min.js'></script>
+
     <script src="/static/js/jquery.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
 	    <script src="/static/js/input_control.js"></script>
